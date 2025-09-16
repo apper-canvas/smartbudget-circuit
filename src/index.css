@@ -1,0 +1,60 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+@import 'react-toastify/dist/ReactToastify.css';
+
+@layer base {
+  * {
+    @apply border-gray-200;
+  }
+  
+  html {
+    font-family: 'Inter', sans-serif;
+  }
+  
+  body {
+    @apply text-gray-900 bg-gray-50;
+  }
+}
+
+/* Toast customizations */
+.Toastify__toast-container {
+  @apply text-sm;
+  width: auto;
+  min-width: 300px;
+  max-width: 480px;
+}
+
+.Toastify__toast {
+  @apply rounded-lg shadow-lg border font-medium;
+  padding: 12px 16px;
+  min-height: auto;
+}
+
+.Toastify__toast--success {
+  @apply bg-white border-emerald-200 text-gray-900;
+}
+
+.Toastify__toast--error {
+  @apply bg-white border-red-200 text-gray-900;
+}
+
+.Toastify__toast--info {
+  @apply bg-white border-blue-200 text-gray-900;
+}
+
+.Toastify__progress-bar {
+  @apply bg-primary-500;
+}
+
+.Toastify__progress-bar--success {
+  @apply bg-primary-500;
+}
+
+.Toastify__progress-bar--error {
+  @apply bg-red-500;
+}
+
+.Toastify__progress-bar--info {
+  @apply bg-blue-500;
+}

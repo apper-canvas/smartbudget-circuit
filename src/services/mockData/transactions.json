@@ -1,0 +1,137 @@
+[
+  {
+    "Id": 1,
+    "type": "income",
+    "amount": 3500.00,
+    "category": "Salary",
+    "description": "Monthly salary payment",
+    "date": "2024-01-15",
+    "createdAt": "2024-01-15T09:00:00Z"
+  },
+  {
+    "Id": 2,
+    "type": "expense",
+    "amount": 1200.00,
+    "category": "Rent",
+    "description": "Monthly rent payment",
+    "date": "2024-01-01",
+    "createdAt": "2024-01-01T10:00:00Z"
+  },
+  {
+    "Id": 3,
+    "type": "expense",
+    "amount": 85.50,
+    "category": "Groceries",
+    "description": "Weekly grocery shopping at Whole Foods",
+    "date": "2024-01-03",
+    "createdAt": "2024-01-03T18:30:00Z"
+  },
+  {
+    "Id": 4,
+    "type": "expense",
+    "amount": 45.00,
+    "category": "Transportation",
+    "description": "Gas for car",
+    "date": "2024-01-05",
+    "createdAt": "2024-01-05T14:20:00Z"
+  },
+  {
+    "Id": 5,
+    "type": "expense",
+    "amount": 25.00,
+    "category": "Entertainment",
+    "description": "Movie tickets",
+    "date": "2024-01-07",
+    "createdAt": "2024-01-07T20:15:00Z"
+  },
+  {
+    "Id": 6,
+    "type": "expense",
+    "amount": 120.00,
+    "category": "Utilities",
+    "description": "Electricity bill",
+    "date": "2024-01-02",
+    "createdAt": "2024-01-02T11:00:00Z"
+  },
+  {
+    "Id": 7,
+    "type": "income",
+    "amount": 200.00,
+    "category": "Freelance",
+    "description": "Web design project payment",
+    "date": "2024-01-10",
+    "createdAt": "2024-01-10T16:45:00Z"
+  },
+  {
+    "Id": 8,
+    "type": "expense",
+    "amount": 35.50,
+    "category": "Dining Out",
+    "description": "Lunch at Italian restaurant",
+    "date": "2024-01-08",
+    "createdAt": "2024-01-08T13:30:00Z"
+  },
+  {
+    "Id": 9,
+    "type": "expense",
+    "amount": 150.00,
+    "category": "Shopping",
+    "description": "New winter jacket",
+    "date": "2024-01-12",
+    "createdAt": "2024-01-12T15:20:00Z"
+  },
+  {
+    "Id": 10,
+    "type": "expense",
+    "amount": 75.00,
+    "category": "Healthcare",
+    "description": "Doctor visit co-pay",
+    "date": "2024-01-14",
+    "createdAt": "2024-01-14T10:30:00Z"
+  },
+  {
+    "Id": 11,
+    "type": "expense",
+    "amount": 95.25,
+    "category": "Groceries",
+    "description": "Weekly grocery shopping",
+    "date": "2024-01-10",
+    "createdAt": "2024-01-10T17:45:00Z"
+  },
+  {
+    "Id": 12,
+    "type": "expense",
+    "amount": 60.00,
+    "category": "Transportation",
+    "description": "Monthly bus pass",
+    "date": "2024-01-01",
+    "createdAt": "2024-01-01T08:00:00Z"
+  },
+  {
+    "Id": 13,
+    "type": "income",
+    "amount": 50.00,
+    "category": "Other Income",
+    "description": "Cashback rewards",
+    "date": "2024-01-11",
+    "createdAt": "2024-01-11T12:00:00Z"
+  },
+  {
+    "Id": 14,
+    "type": "expense",
+    "amount": 40.00,
+    "category": "Entertainment",
+    "description": "Streaming services subscription",
+    "date": "2024-01-01",
+    "createdAt": "2024-01-01T09:00:00Z"
+  },
+  {
+    "Id": 15,
+    "type": "expense",
+    "amount": 25.75,
+    "category": "Dining Out",
+    "description": "Coffee shop visit",
+    "date": "2024-01-13",
+    "createdAt": "2024-01-13T08:30:00Z"
+  }
+]
