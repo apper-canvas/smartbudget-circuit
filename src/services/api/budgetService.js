@@ -1,5 +1,4 @@
-import budgetData from "@/services/mockData/budgets.json"
-
+import budgetData from "@/services/mockData/budgets.json";
 // Service implementation with realistic delays
 export const budgetService = {
   getAll: async () => {
@@ -16,7 +15,7 @@ export const budgetService = {
     return { ...budget }
   },
 
-  create: async (budgetData) => {
+create: async (budgetData) => {
     await new Promise(resolve => setTimeout(resolve, 400))
     const maxId = Math.max(...budgetData.map(item => item.Id), 0)
     const newBudget = {
@@ -31,7 +30,7 @@ export const budgetService = {
     return { ...newBudget }
   },
 
-  update: async (id, updateData) => {
+update: async (id, updateData) => {
     await new Promise(resolve => setTimeout(resolve, 400))
     const index = budgetData.findIndex(item => item.Id === parseInt(id))
     if (index === -1) {
@@ -46,7 +45,7 @@ export const budgetService = {
     return { ...updatedBudget }
   },
 
-  delete: async (id) => {
+delete: async (id) => {
     await new Promise(resolve => setTimeout(resolve, 300))
     const index = budgetData.findIndex(item => item.Id === parseInt(id))
     if (index === -1) {
