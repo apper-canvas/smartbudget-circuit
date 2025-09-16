@@ -15,18 +15,20 @@ export const budgetService = {
     return { ...budget }
   },
 
-create: async (budgetData) => {
+create: async (formData) => {
     await new Promise(resolve => setTimeout(resolve, 400))
-    const maxId = Math.max(...budgetData.map(item => item.Id), 0)
+    // Ensure budgetData is an array and get max ID safely
+    const budgetArray = Array.isArray(budgetData) ? budgetData : []
+    const maxId = budgetArray.length > 0 ? Math.max(...budgetArray.map(item => item.Id || item.id || 0), 0) : 0
     const newBudget = {
       Id: maxId + 1,
-      category: budgetData.category,
-      monthlyLimit: budgetData.monthlyLimit,
-      month: budgetData.month,
-      year: budgetData.year,
+      category: formData.category,
+      monthlyLimit: formData.monthlyLimit,
+      month: formData.month,
+      year: formData.year,
       createdAt: new Date().toISOString()
     }
-    budgetData.push(newBudget)
+    budgetArray.push(newBudget)
     return { ...newBudget }
   },
 
