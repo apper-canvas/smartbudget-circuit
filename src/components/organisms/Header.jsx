@@ -10,9 +10,10 @@ const Header = () => {
   const navigate = useNavigate()
 
   const navigation = [
-    { name: "Dashboard", path: "/", icon: "LayoutDashboard" },
+{ name: "Dashboard", path: "/", icon: "LayoutDashboard" },
     { name: "Transactions", path: "/transactions", icon: "Receipt" },
-    { name: "Budget", path: "/budget", icon: "Target" },
+    { name: "Budget", path: "/budget", icon: "PieChart" },
+    { name: "Savings Goals", path: "/savings-goals", icon: "Target" },
     { name: "Reports", path: "/reports", icon: "BarChart3" }
   ]
 
