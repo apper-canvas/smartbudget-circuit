@@ -28,7 +28,7 @@ loadCategories()
 setFormData({
         type_c: initialData.type_c || "expense",
         amount_c: initialData.amount_c?.toString() || "",
-        category_c: initialData.category_c?.Id || initialData.category_c || "",
+category_c: initialData.category_c?.Id || initialData.category_c || "",
         description_c: initialData.description_c || "",
         date_c: initialData.date_c ? new Date(initialData.date_c).toISOString().split("T")[0] : new Date().toISOString().split("T")[0],
         range_c: initialData.range_c?.toString() || "",
@@ -95,7 +95,7 @@ try {
       const transactionData = {
         ...formData,
         amount_c: Number(formData.amount_c) || 0,
-        category_c: formData.category_c,
+category_c: formData.category_c ? parseInt(formData.category_c) : null,
         range_c: formData.range_c ? parseFloat(formData.range_c) : null,
         Tags: formData.Tags.trim(),
         datetime_c: formData.datetime_c ? new Date(formData.datetime_c).toISOString() : null
