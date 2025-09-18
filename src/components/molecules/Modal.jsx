@@ -70,7 +70,7 @@ const Modal = ({
                   <ApperIcon name="X" className="w-4 h-4" />
                 </Button>
               </div>
-              <div className="p-6">
+<div className="p-6 max-h-[80vh] overflow-y-auto">
                 {children}
               </div>
             </motion.div>
