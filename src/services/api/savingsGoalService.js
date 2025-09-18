@@ -20,7 +20,17 @@ fields: [
           { field: { Name: "target_date_c" }},
           { field: { Name: "notes_c" }},
           { field: { Name: "created_at_c" }},
-          { field: { Name: "goal_term_c" }}
+          { field: { Name: "decimal_field_c" }},
+          { field: { Name: "multi_picklist_field_c" }},
+          { field: { Name: "range_field_c" }},
+          { field: { Name: "boolean_field_c" }},
+          { field: { Name: "email_field_c" }},
+          { field: { Name: "checkbox_field_c" }},
+          { field: { Name: "radio_field_c" }},
+          { field: { Name: "phone_field_c" }},
+          { field: { Name: "website_field_c" }},
+          { field: { Name: "goal_term_c" }},
+          { field: { Name: "completion_rate_c" }}
         ],
         orderBy: [{ fieldName: "created_at_c", sorttype: "DESC" }]
       }
@@ -58,7 +68,17 @@ fields: [
           { field: { Name: "target_date_c" }},
           { field: { Name: "notes_c" }},
           { field: { Name: "created_at_c" }},
-          { field: { Name: "goal_term_c" }}
+          { field: { Name: "decimal_field_c" }},
+          { field: { Name: "multi_picklist_field_c" }},
+          { field: { Name: "range_field_c" }},
+          { field: { Name: "boolean_field_c" }},
+          { field: { Name: "email_field_c" }},
+          { field: { Name: "checkbox_field_c" }},
+          { field: { Name: "radio_field_c" }},
+          { field: { Name: "phone_field_c" }},
+          { field: { Name: "website_field_c" }},
+          { field: { Name: "goal_term_c" }},
+          { field: { Name: "completion_rate_c" }}
         ]
       }
 
@@ -87,7 +107,17 @@ Name: goalData.title_c,
           target_date_c: goalData.target_date_c,
           notes_c: goalData.notes_c,
           created_at_c: new Date().toISOString(),
-          goal_term_c: goalData.goal_term_c
+          decimal_field_c: goalData.decimal_field_c,
+          multi_picklist_field_c: goalData.multi_picklist_field_c,
+          range_field_c: goalData.range_field_c,
+          boolean_field_c: goalData.boolean_field_c,
+          email_field_c: goalData.email_field_c,
+          checkbox_field_c: goalData.checkbox_field_c,
+          radio_field_c: goalData.radio_field_c,
+          phone_field_c: goalData.phone_field_c,
+          website_field_c: goalData.website_field_c,
+          goal_term_c: goalData.goal_term_c,
+          completion_rate_c: goalData.completion_rate_c || 0
         }]
       }
 
@@ -134,7 +164,17 @@ records: [{
           current_amount_c: goalData.current_amount_c,
           target_date_c: goalData.target_date_c,
           notes_c: goalData.notes_c,
-          goal_term_c: goalData.goal_term_c
+          decimal_field_c: goalData.decimal_field_c,
+          multi_picklist_field_c: goalData.multi_picklist_field_c,
+          range_field_c: goalData.range_field_c,
+          boolean_field_c: goalData.boolean_field_c,
+          email_field_c: goalData.email_field_c,
+          checkbox_field_c: goalData.checkbox_field_c,
+          radio_field_c: goalData.radio_field_c,
+          phone_field_c: goalData.phone_field_c,
+          website_field_c: goalData.website_field_c,
+          goal_term_c: goalData.goal_term_c,
+          completion_rate_c: goalData.completion_rate_c || 0
         }]
       }
 
