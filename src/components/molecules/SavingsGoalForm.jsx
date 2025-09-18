@@ -12,7 +12,8 @@ const SavingsGoalForm = ({ onSubmit, onCancel, initialData = null }) => {
     current_amount_c: "",
     notes_c: "",
     goal_term_c: "short term",
-})
+    completion_rate_c: ""
+  })
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
 
@@ -26,7 +27,8 @@ useEffect(() => {
         current_amount_c: initialData.current_amount_c?.toString() || "",
         notes_c: initialData.notes_c || "",
         goal_term_c: initialData.goal_term_c || "short term",
-})
+        completion_rate_c: initialData.completion_rate_c?.toString() || ""
+      })
     }
   }, [initialData])
 
@@ -64,6 +66,9 @@ const validateForm = () => {
       newErrors.current_amount_c = "Please enter a valid current amount"
     }
 
+    if (formData.completion_rate_c && (isNaN(formData.completion_rate_c) || parseFloat(formData.completion_rate_c) < 0 || parseFloat(formData.completion_rate_c) > 100)) {
+      newErrors.completion_rate_c = "Please enter a valid completion rate (0-100)"
+    }
     
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -83,7 +88,8 @@ try {
         current_amount_c: parseFloat(formData.current_amount_c) || 0,
         notes_c: formData.notes_c.trim(),
         goal_term_c: formData.goal_term_c,
-}
+        completion_rate_c: parseFloat(formData.completion_rate_c) || 0
+      }
       
       await onSubmit(goal)
     } catch (error) {
@@ -168,6 +174,20 @@ try {
         </select>
       </FormField>
 
+      <FormField label="Completion Rate (%)" error={errors.completion_rate_c}>
+        <Input
+          type="number"
+          min="0"
+          max="100"
+          step="1"
+          placeholder="0"
+          value={formData.completion_rate_c}
+          onChange={(e) => handleChange("completion_rate_c", e.target.value)}
+        />
+        <div className="text-xs text-gray-500 mt-1">
+          Enter completion percentage (0-100%)
+        </div>
+      </FormField>
 
 {/* Removed radio field as it doesn't exist in database schema */}
 
