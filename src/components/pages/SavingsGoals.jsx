@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react"
-import { toast } from "react-toastify"
-import Button from "@/components/atoms/Button"
-import Modal from "@/components/molecules/Modal"
-import SavingsGoalForm from "@/components/molecules/SavingsGoalForm"
-import Loading from "@/components/ui/Loading"
-import Error from "@/components/ui/Error"
-import ApperIcon from "@/components/ApperIcon"
-import { savingsGoalService } from "@/services/api/savingsGoalService"
-import { formatCurrency, formatDate } from "@/utils/formatters"
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { savingsGoalService } from "@/services/api/savingsGoalService";
+import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
+import Loading from "@/components/ui/Loading";
+import Error from "@/components/ui/Error";
+import Modal from "@/components/molecules/Modal";
+import SavingsGoalForm from "@/components/molecules/SavingsGoalForm";
+import { formatCurrency, formatDate } from "@/utils/formatters";
 
 const SavingsGoals = () => {
   const [goals, setGoals] = useState([])
@@ -133,15 +133,19 @@ const SavingsGoals = () => {
             Create Your First Goal
           </Button>
         </div>
-      ) : (
+) : (
         <div className="grid gap-6">
-{goals.filter(goal => goal && goal.Id).map((goal) => {
-            const progress = calculateProgress(goal.current_amount_c || 0, goal.target_amount_c || 0)
-            const isCompleted = progress >= 100
-const completionRate = Math.round(progress)
-            const daysUntilTarget = goal.target_date_c ? Math.ceil(
-              (new Date(goal.target_date_c) - new Date()) / (1000 * 60 * 60 * 24)
-            ) : 0
+          {goals.filter(goal => goal && goal.Id).map((goal) => {
+            const progress = calculateProgress(goal.current_amount_c, goal.target_amount_c);
+            const progressColor = getProgressColor(progress);
+            
+            // Calculate completion status
+            const isCompleted = progress >= 100;
+            
+            // Calculate days until target
+            const targetDate = new Date(goal.target_date_c);
+            const today = new Date();
+            const daysUntilTarget = Math.ceil((targetDate - today) / (1000 * 60 * 60 * 24));
             
             // Goal term badge styling
             const getTermBadgeColor = (term) => {
@@ -186,12 +190,11 @@ const completionRate = Math.round(progress)
                           {formatTermDisplay(goal.goal_term_c)}
                         </span>
                       )}
-                      <div className="flex items-center gap-1 text-sm text-gray-600">
-                        <ApperIcon name="Target" className="w-4 h-4" />
-                        {completionRate}% Complete
+                      <div className="flex items-center gap-1 text-sm text-primary-600 font-medium">
+                        <ApperIcon name="TrendingUp" className="w-4 h-4" />
+                        Progress Tracking
                       </div>
                     </div>
-                    
                     <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-4">
                       <div className="flex items-center gap-1">
                         <ApperIcon name="Calendar" className="w-4 h-4" />

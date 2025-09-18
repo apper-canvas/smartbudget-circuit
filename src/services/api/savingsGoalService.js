@@ -28,11 +28,10 @@ fields: [
           { field: { Name: "checkbox_field_c" }},
           { field: { Name: "radio_field_c" }},
           { field: { Name: "phone_field_c" }},
-          { field: { Name: "website_field_c" }},
-          { field: { Name: "goal_term_c" }},
-          { field: { Name: "completion_rate_c" }}
-        ],
-        orderBy: [{ fieldName: "created_at_c", sorttype: "DESC" }]
+{ field: { Name: "notes_c" }},
+        { field: { Name: "created_at_c" }}
+      ],
+      orderBy: [{ fieldName: "Id", sorttype: "DESC" }],
       }
 
       const response = await apperClient.fetchRecords('savings_goal_c', params)
@@ -76,11 +75,10 @@ fields: [
           { field: { Name: "checkbox_field_c" }},
           { field: { Name: "radio_field_c" }},
           { field: { Name: "phone_field_c" }},
-          { field: { Name: "website_field_c" }},
-          { field: { Name: "goal_term_c" }},
-          { field: { Name: "completion_rate_c" }}
-        ]
-      }
+{ field: { Name: "notes_c" }},
+        { field: { Name: "created_at_c" }}
+      ]
+    };
 
       const response = await apperClient.getRecordById('savings_goal_c', parseInt(id), params)
       return response.data
@@ -115,11 +113,10 @@ Name: goalData.title_c,
           checkbox_field_c: goalData.checkbox_field_c,
           radio_field_c: goalData.radio_field_c,
           phone_field_c: goalData.phone_field_c,
-website_field_c: goalData.website_field_c,
-          goal_term_c: goalData.goal_term_c,
-          completion_rate_c: (goalData.completion_rate_c || 0) / 100
-        }]
-      }
+target_date_c: goalData.target_date_c,
+        notes_c: goalData.notes_c || ''
+      }]
+    };
 
       const response = await apperClient.createRecord('savings_goal_c', params)
 
@@ -172,11 +169,10 @@ records: [{
           checkbox_field_c: goalData.checkbox_field_c,
           radio_field_c: goalData.radio_field_c,
           phone_field_c: goalData.phone_field_c,
-website_field_c: goalData.website_field_c,
-          goal_term_c: goalData.goal_term_c,
-          completion_rate_c: (goalData.completion_rate_c || 0) / 100
-        }]
-      }
+target_date_c: goalData.target_date_c,
+        notes_c: goalData.notes_c || ''
+      }]
+    };
 
       const response = await apperClient.updateRecord('savings_goal_c', params)
 
