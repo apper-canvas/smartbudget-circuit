@@ -21,7 +21,6 @@ const [formData, setFormData] = useState({
     phone_field_c: "",
     website_field_c: "",
     goal_term_c: "short term",
-    completion_rate_c: "0"
   })
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
@@ -45,7 +44,6 @@ setFormData({
         phone_field_c: initialData.phone_field_c || "",
         website_field_c: initialData.website_field_c || "",
         goal_term_c: initialData.goal_term_c || "short term",
-        completion_rate_c: initialData.completion_rate_c ? (initialData.completion_rate_c * 100).toString() : "0"
       })
     }
   }, [initialData])
@@ -146,7 +144,6 @@ title_c: formData.title_c.trim(),
         phone_field_c: formData.phone_field_c.trim(),
         website_field_c: formData.website_field_c.trim(),
         goal_term_c: formData.goal_term_c,
-        completion_rate_c: parseFloat(formData.completion_rate_c) / 100 || 0
       }
       
       await onSubmit(goal)
@@ -312,20 +309,6 @@ title_c: formData.title_c.trim(),
         </select>
       </FormField>
 
-      <FormField label="Completion Rate (%)" error={errors.completion_rate_c}>
-        <Input
-          type="number"
-          min="0"
-          max="100"
-          step="1"
-          placeholder="0"
-          value={formData.completion_rate_c}
-          onChange={(e) => handleChange("completion_rate_c", e.target.value)}
-        />
-        <div className="text-xs text-gray-500 mt-1">
-          Enter completion percentage (0-100%)
-        </div>
-      </FormField>
 
 <FormField label="Goal Type" error={errors.radio_field_c}>
         <div className="space-y-2">

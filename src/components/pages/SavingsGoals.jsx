@@ -138,7 +138,7 @@ const SavingsGoals = () => {
 {goals.filter(goal => goal && goal.Id).map((goal) => {
             const progress = calculateProgress(goal.current_amount_c || 0, goal.target_amount_c || 0)
             const isCompleted = progress >= 100
-            const completionRate = goal.completion_rate_c ? Math.round(goal.completion_rate_c * 100) : Math.round(progress)
+const completionRate = Math.round(progress)
             const daysUntilTarget = goal.target_date_c ? Math.ceil(
               (new Date(goal.target_date_c) - new Date()) / (1000 * 60 * 60 * 24)
             ) : 0
