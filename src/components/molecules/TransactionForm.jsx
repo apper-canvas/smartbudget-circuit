@@ -91,18 +91,16 @@ if (!formData.amount_c || isNaN(formData.amount_c) || parseFloat(formData.amount
     if (!validateForm()) return
     
     setLoading(true)
-    try {
-const transaction = {
-type_c: formData.type_c,
-        amount_c: parseFloat(formData.amount_c),
-        category_c: parseInt(formData.category_c),
-        description_c: formData.description_c.trim(),
-        date_c: formData.date_c,
+try {
+      const transactionData = {
+        ...formData,
+        amount_c: Number(formData.amount_c) || 0,
+        category_c: formData.category_c,
         range_c: formData.range_c ? parseFloat(formData.range_c) : null,
         Tags: formData.Tags.trim(),
         datetime_c: formData.datetime_c ? new Date(formData.datetime_c).toISOString() : null
       }
-      await onSubmit(transaction)
+      await onSubmit(transactionData)
     } catch (error) {
       console.error("Form submission error:", error)
     } finally {
@@ -125,19 +123,19 @@ const filteredCategories = categories.filter(cat => cat.type_c === formData.type
           </Select>
         </FormField>
         
-        <FormField label="Amount" required error={errors.amount}>
+<FormField label="Amount" required error={errors.amount_c}>
           <Input
             type="number"
             step="0.01"
             min="0"
-placeholder="0.00"
+            placeholder="0.00"
             value={formData.amount_c}
             onChange={(e) => handleChange("amount_c", e.target.value)}
           />
         </FormField>
       </div>
       
-      <FormField label="Category" required error={errors.category}>
+      <FormField label="Category" required error={errors.category_c}>
 <Select 
           value={formData.category_c} 
           onChange={(e) => handleChange("category_c", e.target.value)}
