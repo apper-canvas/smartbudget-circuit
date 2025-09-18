@@ -138,9 +138,29 @@ const SavingsGoals = () => {
           {goals.map((goal) => {
 const progress = calculateProgress(goal.current_amount_c, goal.target_amount_c)
             const isCompleted = progress >= 100
+            const completionRate = goal.completion_rate_c ? Math.round(goal.completion_rate_c * 100) : Math.round(progress)
             const daysUntilTarget = Math.ceil(
               (new Date(goal.target_date_c) - new Date()) / (1000 * 60 * 60 * 24)
             )
+            
+            // Goal term badge styling
+            const getTermBadgeColor = (term) => {
+              switch(term) {
+                case 'immediate': return 'bg-red-100 text-red-800'
+                case 'short term': return 'bg-yellow-100 text-yellow-800' 
+                case 'long term': return 'bg-green-100 text-green-800'
+                default: return 'bg-gray-100 text-gray-800'
+              }
+            }
+            
+            const formatTermDisplay = (term) => {
+              switch(term) {
+                case 'immediate': return 'Immediate'
+                case 'short term': return 'Short Term'
+                case 'long term': return 'Long Term'
+                default: return term
+              }
+            }
 
             return (
               <div
@@ -160,6 +180,18 @@ const progress = calculateProgress(goal.current_amount_c, goal.target_amount_c)
                     {goal.notes_c && (
                       <p className="text-gray-600 text-sm mb-3">{goal.notes_c}</p>
                     )}
+<div className="flex flex-wrap items-center gap-2 mb-4">
+                      {goal.goal_term_c && (
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getTermBadgeColor(goal.goal_term_c)}`}>
+                          {formatTermDisplay(goal.goal_term_c)}
+                        </span>
+                      )}
+                      <div className="flex items-center gap-1 text-sm text-gray-600">
+                        <ApperIcon name="Target" className="w-4 h-4" />
+                        {completionRate}% Complete
+                      </div>
+                    </div>
+                    
                     <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-4">
                       <div className="flex items-center gap-1">
                         <ApperIcon name="Calendar" className="w-4 h-4" />

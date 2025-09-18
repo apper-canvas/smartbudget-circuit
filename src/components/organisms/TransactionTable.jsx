@@ -6,7 +6,7 @@ import Badge from "@/components/atoms/Badge";
 import Input from "@/components/atoms/Input";
 import Select from "@/components/atoms/Select";
 import { cn } from "@/utils/cn";
-import { formatCurrency, formatDate } from "@/utils/formatters";
+import { formatCurrency, formatDate, formatDateTime } from "@/utils/formatters";
 
 // Utility functions for formatting
 const formatTags = (tags) => {
@@ -20,15 +20,7 @@ const formatTags = (tags) => {
   return [];
 };
 
-const formatDateTime = (datetime) => {
-  if (!datetime) return 'N/A';
-  try {
-    const date = new Date(datetime);
-    return date.toLocaleString();
-  } catch (error) {
-    return 'Invalid Date';
-  }
-};
+// Use the centralized formatDateTime function from utils/formatters
 
 const TransactionTable = ({
   transactions, 
@@ -61,9 +53,12 @@ const TransactionTable = ({
 let aValue = a[sortBy]
       let bValue = b[sortBy]
       
-      if (sortBy === "date_c") {
+if (sortBy === "date_c") {
         aValue = new Date(a.date_c)
         bValue = new Date(b.date_c)
+      } else if (sortBy === "datetime_c") {
+        aValue = new Date(a.datetime_c)
+        bValue = new Date(b.datetime_c)
       } else if (sortBy === "amount_c") {
         aValue = parseFloat(a.amount_c)
         bValue = parseFloat(b.amount_c)
@@ -163,8 +158,16 @@ onClick={() => handleSort("date_c")}
 <th className="text-left py-3 px-4 font-medium text-gray-600">Description</th>
                 <th className="text-left py-3 px-4 font-medium text-gray-600">Category</th>
                 <th className="text-left py-3 px-4 font-medium text-gray-600">Tags</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-600">Range</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-600">DateTime</th>
+<th className="text-left py-3 px-4 font-medium text-gray-600">Range</th>
+                <th 
+                  className="text-left py-3 px-4 font-medium text-gray-600 cursor-pointer hover:bg-gray-50" 
+                  onClick={() => handleSort("datetime_c")}
+                >
+                  <div className="flex items-center gap-1">
+                    Date & Time
+                    {getSortIcon("datetime_c")}
+                  </div>
+                </th>
                 <th className="text-left py-3 px-4 font-medium text-gray-600">Type</th>
                 <th className="text-right py-3 px-4 font-medium text-gray-600">
                   <Button
@@ -204,7 +207,7 @@ Amount
                   <td className="py-3 px-4 text-sm text-gray-600">
                     {transaction.range_c || 'N/A'}
                   </td>
-                  <td className="py-3 px-4 text-sm text-gray-600">
+<td className="py-3 px-4 text-sm text-gray-600">
                     {formatDateTime(transaction.datetime_c)}
                   </td>
                   <td className="py-3 px-4">

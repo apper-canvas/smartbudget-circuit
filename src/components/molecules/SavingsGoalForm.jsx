@@ -11,7 +11,7 @@ const [formData, setFormData] = useState({
     target_date_c: "",
     current_amount_c: "",
     notes_c: "",
-decimal_field_c: "",
+    decimal_field_c: "",
     multi_picklist_field_c: "",
     range_field_c: "1",
     boolean_field_c: true,
@@ -20,21 +20,22 @@ decimal_field_c: "",
     radio_field_c: "Option1",
     phone_field_c: "",
     website_field_c: "",
-    goal_term_c: "short term"
+    goal_term_c: "short term",
+    completion_rate_c: "0"
   })
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
 
 useEffect(() => {
     if (initialData) {
-      setFormData({
+setFormData({
         title_c: initialData.title_c || "",
         target_amount_c: initialData.target_amount_c?.toString() || "",
         target_date_c: initialData.target_date_c ? 
           new Date(initialData.target_date_c).toISOString().split('T')[0] : "",
         current_amount_c: initialData.current_amount_c?.toString() || "",
         notes_c: initialData.notes_c || "",
-decimal_field_c: initialData.decimal_field_c?.toString() || "",
+        decimal_field_c: initialData.decimal_field_c?.toString() || "",
         multi_picklist_field_c: initialData.multi_picklist_field_c || "",
         range_field_c: initialData.range_field_c?.toString() || "1",
         boolean_field_c: initialData.boolean_field_c !== undefined ? initialData.boolean_field_c : true,
@@ -43,7 +44,8 @@ decimal_field_c: initialData.decimal_field_c?.toString() || "",
         radio_field_c: initialData.radio_field_c || "Option1",
         phone_field_c: initialData.phone_field_c || "",
         website_field_c: initialData.website_field_c || "",
-        goal_term_c: initialData.goal_term_c || "short term"
+        goal_term_c: initialData.goal_term_c || "short term",
+        completion_rate_c: initialData.completion_rate_c ? (initialData.completion_rate_c * 100).toString() : "0"
       })
     }
   }, [initialData])
@@ -134,7 +136,7 @@ title_c: formData.title_c.trim(),
         target_date_c: formData.target_date_c,
         current_amount_c: parseFloat(formData.current_amount_c) || 0,
         notes_c: formData.notes_c.trim(),
-decimal_field_c: parseFloat(formData.decimal_field_c) || null,
+        decimal_field_c: parseFloat(formData.decimal_field_c) || null,
         multi_picklist_field_c: formData.multi_picklist_field_c,
         range_field_c: parseInt(formData.range_field_c) || 1,
         boolean_field_c: formData.boolean_field_c,
@@ -143,7 +145,8 @@ decimal_field_c: parseFloat(formData.decimal_field_c) || null,
         radio_field_c: formData.radio_field_c,
         phone_field_c: formData.phone_field_c.trim(),
         website_field_c: formData.website_field_c.trim(),
-        goal_term_c: formData.goal_term_c
+        goal_term_c: formData.goal_term_c,
+        completion_rate_c: parseFloat(formData.completion_rate_c) / 100 || 0
       }
       
       await onSubmit(goal)
@@ -307,6 +310,21 @@ decimal_field_c: parseFloat(formData.decimal_field_c) || null,
           <option value="long term">Long Term</option>
           <option value="immediate">Immediate</option>
         </select>
+      </FormField>
+
+      <FormField label="Completion Rate (%)" error={errors.completion_rate_c}>
+        <Input
+          type="number"
+          min="0"
+          max="100"
+          step="1"
+          placeholder="0"
+          value={formData.completion_rate_c}
+          onChange={(e) => handleChange("completion_rate_c", e.target.value)}
+        />
+        <div className="text-xs text-gray-500 mt-1">
+          Enter completion percentage (0-100%)
+        </div>
       </FormField>
 
 <FormField label="Goal Type" error={errors.radio_field_c}>
