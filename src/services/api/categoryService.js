@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify'
 
-// Service implementation with ApperClient
+
 export const categoryService = {
   getAll: async () => {
     try {
