@@ -10,7 +10,6 @@ import { getCurrentMonth } from "@/utils/formatters"
 const BudgetForm = ({ onSubmit, onCancel, initialData = null }) => {
   const [categories, setCategories] = useState([])
   const [formData, setFormData] = useState({
-    category: "",
 category_c: "",
     monthly_limit_c: "",
     month_c: getCurrentMonth().month,
@@ -51,8 +50,8 @@ try {
   const validateForm = () => {
     const newErrors = {}
     
-    if (!formData.category) {
-      newErrors.category = "Please select a category"
+if (!formData.category_c) {
+      newErrors.category_c = "Please select a category"
     }
     
     if (!formData.monthlyLimit || isNaN(formData.monthlyLimit) || parseFloat(formData.monthlyLimit) <= 0) {
@@ -108,9 +107,9 @@ category_c: parseInt(formData.category_c),
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <FormField label="Category" required error={errors.category}>
-        <Select 
-          value={formData.category} 
-          onChange={(e) => handleChange("category", e.target.value)}
+<Select 
+          value={formData.category_c} 
+          onChange={(e) => handleChange("category_c", e.target.value)}
         >
           <option value="">Select a category</option>
 {categories.map(category => (
