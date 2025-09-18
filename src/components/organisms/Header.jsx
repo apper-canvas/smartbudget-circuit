@@ -34,10 +34,10 @@ const Header = () => {
               className="flex items-center cursor-pointer"
               onClick={() => navigate("/")}
             >
-              <div className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-lg p-2 mr-3">
+<div className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-lg p-2 mr-3">
                 <ApperIcon name="Wallet" className="w-6 h-6 text-white" />
               </div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-primary-600 to-primary-700 bg-clip-text text-transparent">
+<h1 className="text-xl font-bold bg-gradient-to-r from-primary-600 to-primary-700 bg-clip-text text-transparent">
                 SmartBudget
               </h1>
             </div>
@@ -50,7 +50,7 @@ const Header = () => {
                   to={item.path}
                   className={({ isActive }) =>
                     cn(
-                      "flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-primary-50 hover:text-primary-600",
+"flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-primary-50 hover:text-primary-600",
                       isActive
                         ? "bg-primary-50 text-primary-600"
                         : "text-gray-600"
@@ -117,7 +117,7 @@ const Header = () => {
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-8">
                     <div className="flex items-center">
-                      <div className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-lg p-2 mr-3">
+<div className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-lg p-2 mr-3">
                         <ApperIcon name="Wallet" className="w-5 h-5 text-white" />
                       </div>
                       <h2 className="text-lg font-bold text-gray-900">SmartBudget</h2>
@@ -141,7 +141,7 @@ const Header = () => {
                         className={({ isActive }) =>
                           cn(
                             "flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200",
-                            isActive
+isActive
                               ? "bg-primary-50 text-primary-600"
                               : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                           )

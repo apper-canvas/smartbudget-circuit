@@ -4,7 +4,7 @@ import ApperIcon from "@/components/ApperIcon"
 import { cn } from "@/utils/cn"
 
 const StatCard = ({ title, value, subtitle, icon, trend, color = "primary" }) => {
-  const colorClasses = {
+const colorClasses = {
     primary: "text-primary-600 bg-primary-50",
     success: "text-green-600 bg-green-50",
     warning: "text-amber-600 bg-amber-50",

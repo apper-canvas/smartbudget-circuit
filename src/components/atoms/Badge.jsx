@@ -7,7 +7,7 @@ const Badge = React.forwardRef(({ className, variant = "default", ...props }, re
     success: "bg-green-100 text-green-800 hover:bg-green-200",
     warning: "bg-amber-100 text-amber-800 hover:bg-amber-200",
     danger: "bg-red-100 text-red-800 hover:bg-red-200",
-    info: "bg-blue-100 text-blue-800 hover:bg-blue-200"
+info: "bg-blue-500/10 text-blue-700 hover:bg-blue-500/20"
   }
   
   return (
