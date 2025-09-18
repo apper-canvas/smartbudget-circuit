@@ -16,39 +16,57 @@ export const transactionService = {
     return { ...transaction }
   },
 
-  create: async (transactionData) => {
+create: async (newTransactionData) => {
     await new Promise(resolve => setTimeout(resolve, 400))
+    
+    // Validate that transactionData is an array
+    if (!Array.isArray(transactionData)) {
+      throw new Error('Transaction data is not properly initialized as an array')
+    }
+    
     const maxId = Math.max(...transactionData.map(item => item.Id), 0)
     const newTransaction = {
       Id: maxId + 1,
-      type: transactionData.type,
-      amount: transactionData.amount,
-      category: transactionData.category,
-      description: transactionData.description,
-      date: transactionData.date,
+      type: newTransactionData.type,
+      amount: newTransactionData.amount,
+      category: newTransactionData.category,
+      description: newTransactionData.description,
+      date: newTransactionData.date,
       createdAt: new Date().toISOString()
     }
     transactionData.unshift(newTransaction)
     return { ...newTransaction }
   },
 
-  update: async (id, updateData) => {
+update: async (id, transactionUpdateData) => {
     await new Promise(resolve => setTimeout(resolve, 400))
+    
+    // Validate that transactionData is an array
+    if (!Array.isArray(transactionData)) {
+      throw new Error('Transaction data is not properly initialized as an array')
+    }
+    
     const index = transactionData.findIndex(item => item.Id === parseInt(id))
     if (index === -1) {
       throw new Error(`Transaction with Id ${id} not found`)
     }
     const updatedTransaction = {
       ...transactionData[index],
-      ...updateData,
+      ...transactionUpdateData,
       Id: parseInt(id)
     }
     transactionData[index] = updatedTransaction
     return { ...updatedTransaction }
   },
 
-  delete: async (id) => {
+delete: async (id) => {
     await new Promise(resolve => setTimeout(resolve, 300))
+    
+    // Validate that transactionData is an array
+    if (!Array.isArray(transactionData)) {
+      throw new Error('Transaction data is not properly initialized as an array')
+    }
+    
     const index = transactionData.findIndex(item => item.Id === parseInt(id))
     if (index === -1) {
       throw new Error(`Transaction with Id ${id} not found`)
