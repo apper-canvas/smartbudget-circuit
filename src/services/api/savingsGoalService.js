@@ -115,9 +115,9 @@ Name: goalData.title_c,
           checkbox_field_c: goalData.checkbox_field_c,
           radio_field_c: goalData.radio_field_c,
           phone_field_c: goalData.phone_field_c,
-          website_field_c: goalData.website_field_c,
+website_field_c: goalData.website_field_c,
           goal_term_c: goalData.goal_term_c,
-completion_rate_c: (goalData.completion_rate_c || 0).toString()
+          completion_rate_c: (goalData.completion_rate_c || 0) / 100
         }]
       }
 
@@ -172,9 +172,9 @@ records: [{
           checkbox_field_c: goalData.checkbox_field_c,
           radio_field_c: goalData.radio_field_c,
           phone_field_c: goalData.phone_field_c,
-          website_field_c: goalData.website_field_c,
+website_field_c: goalData.website_field_c,
           goal_term_c: goalData.goal_term_c,
-completion_rate_c: (goalData.completion_rate_c || 0).toString()
+          completion_rate_c: (goalData.completion_rate_c || 0) / 100
         }]
       }
 

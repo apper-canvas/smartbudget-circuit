@@ -19,8 +19,9 @@ const [formData, setFormData] = useState({
     checkbox_field_c: "",
     radio_field_c: "Option1",
     phone_field_c: "",
-    website_field_c: "",
+website_field_c: "",
     goal_term_c: "short term",
+    completion_rate_c: "0",
   })
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
@@ -142,8 +143,9 @@ title_c: formData.title_c.trim(),
         checkbox_field_c: formData.checkbox_field_c,
         radio_field_c: formData.radio_field_c,
         phone_field_c: formData.phone_field_c.trim(),
-        website_field_c: formData.website_field_c.trim(),
+website_field_c: formData.website_field_c.trim(),
         goal_term_c: formData.goal_term_c,
+        completion_rate_c: parseFloat(formData.completion_rate_c) || 0,
       }
       
       await onSubmit(goal)
@@ -307,9 +309,22 @@ title_c: formData.title_c.trim(),
           <option value="long term">Long Term</option>
           <option value="immediate">Immediate</option>
         </select>
+</FormField>
+
+      <FormField label="Completion Rate (%)" error={errors.completion_rate_c}>
+        <Input
+          type="number"
+          step="0.1"
+          min="0"
+          max="100"
+          placeholder="Enter completion percentage (0-100)"
+          value={formData.completion_rate_c}
+          onChange={(e) => handleChange("completion_rate_c", e.target.value)}
+        />
+        <div className="text-xs text-gray-500 mt-1">
+          Current completion percentage of your savings goal
+        </div>
       </FormField>
-
-
 <FormField label="Goal Type" error={errors.radio_field_c}>
         <div className="space-y-2">
           {[
