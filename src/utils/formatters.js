@@ -15,6 +15,22 @@ export const formatDate = (dateString) => {
   })
 }
 
+export const formatDateTime = (dateString) => {
+  if (!dateString) return 'N/A'
+  return new Date(dateString).toLocaleString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  })
+}
+
+export const formatTags = (tagsString) => {
+  if (!tagsString) return []
+  return tagsString.split(',').map(tag => tag.trim()).filter(tag => tag)
+}
+
 export const formatPercent = (value, decimals = 1) => {
   return `${value.toFixed(decimals)}%`
 }

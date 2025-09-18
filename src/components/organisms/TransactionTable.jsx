@@ -1,14 +1,36 @@
-import React, { useState } from "react"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/atoms/Card"
-import Button from "@/components/atoms/Button"
-import Input from "@/components/atoms/Input"
-import Select from "@/components/atoms/Select"
-import Badge from "@/components/atoms/Badge"
-import ApperIcon from "@/components/ApperIcon"
-import { formatCurrency, formatDate } from "@/utils/formatters"
-import { cn } from "@/utils/cn"
+import React, { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/atoms/Card";
+import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
+import Badge from "@/components/atoms/Badge";
+import Input from "@/components/atoms/Input";
+import Select from "@/components/atoms/Select";
+import { cn } from "@/utils/cn";
+import { formatCurrency, formatDate } from "@/utils/formatters";
 
-const TransactionTable = ({ 
+// Utility functions for formatting
+const formatTags = (tags) => {
+  if (!tags) return [];
+  if (typeof tags === 'string') {
+    return tags.split(',').map(tag => tag.trim()).filter(Boolean);
+  }
+  if (Array.isArray(tags)) {
+    return tags;
+  }
+  return [];
+};
+
+const formatDateTime = (datetime) => {
+  if (!datetime) return 'N/A';
+  try {
+    const date = new Date(datetime);
+    return date.toLocaleString();
+  } catch (error) {
+    return 'Invalid Date';
+  }
+};
+
+const TransactionTable = ({
   transactions, 
   onEdit, 
   onDelete,
@@ -20,12 +42,13 @@ const TransactionTable = ({
   const [sortBy, setSortBy] = useState("date")
   const [sortOrder, setSortOrder] = useState("desc")
 
-  // Get unique categories for filter
-const categories = [...new Set(transactions.map(t => t.category_c?.Name || t.category_c))].sort()
-
-  // Filter and sort transactions
-  const filteredTransactions = transactions
-.filter(transaction => {
+// Get unique categories for filter
+  const categories = transactions && transactions.length > 0 
+    ? [...new Set(transactions.map(t => t.category_c?.Name || t.category_c || 'Uncategorized'))].sort()
+    : [];
+// Filter and sort transactions
+  const filteredTransactions = (transactions || [])
+    .filter(transaction => {
       const description = transaction.description_c || ''
       const category = transaction.category_c?.Name || transaction.category_c || ''
       const matchesSearch = description.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -130,25 +153,28 @@ let aValue = a[sortBy]
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => handleSort("date")}
+onClick={() => handleSort("date_c")}
                     className="h-auto p-0 font-medium text-gray-600 hover:text-gray-900"
                   >
                     Date
-                    <ApperIcon name={getSortIcon("date")} className="w-4 h-4 ml-1" />
+                    <ApperIcon name={getSortIcon("date_c")} className="w-4 h-4 ml-1" />
                   </Button>
                 </th>
-                <th className="text-left py-3 px-4 font-medium text-gray-600">Description</th>
+<th className="text-left py-3 px-4 font-medium text-gray-600">Description</th>
                 <th className="text-left py-3 px-4 font-medium text-gray-600">Category</th>
+                <th className="text-left py-3 px-4 font-medium text-gray-600">Tags</th>
+                <th className="text-left py-3 px-4 font-medium text-gray-600">Range</th>
+                <th className="text-left py-3 px-4 font-medium text-gray-600">DateTime</th>
                 <th className="text-left py-3 px-4 font-medium text-gray-600">Type</th>
                 <th className="text-right py-3 px-4 font-medium text-gray-600">
                   <Button
-                    variant="ghost"
+variant="ghost"
                     size="sm"
-                    onClick={() => handleSort("amount")}
+                    onClick={() => handleSort("amount_c")}
                     className="h-auto p-0 font-medium text-gray-600 hover:text-gray-900 ml-auto"
                   >
-                    Amount
-                    <ApperIcon name={getSortIcon("amount")} className="w-4 h-4 ml-1" />
+Amount
+                    <ApperIcon name={getSortIcon("amount_c")} className="w-4 h-4 ml-1" />
                   </Button>
                 </th>
                 <th className="text-right py-3 px-4 font-medium text-gray-600">Actions</th>
@@ -164,7 +190,22 @@ let aValue = a[sortBy]
                     <div className="font-medium text-gray-900">{transaction.description_c}</div>
                   </td>
                   <td className="py-3 px-4">
-                    <Badge variant="default">{transaction.category_c?.Name || transaction.category_c}</Badge>
+<Badge variant="default">{transaction.category_c?.Name || transaction.category_c}</Badge>
+                  </td>
+                  <td className="py-3 px-4">
+                    <div className="flex flex-wrap gap-1">
+                      {formatTags(transaction.Tags).map((tag, index) => (
+                        <Badge key={index} variant="secondary" className="text-xs">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </td>
+                  <td className="py-3 px-4 text-sm text-gray-600">
+                    {transaction.range_c || 'N/A'}
+                  </td>
+                  <td className="py-3 px-4 text-sm text-gray-600">
+                    {formatDateTime(transaction.datetime_c)}
                   </td>
                   <td className="py-3 px-4">
                     <Badge variant={transaction.type_c === "income" ? "success" : "danger"}>
@@ -174,9 +215,9 @@ let aValue = a[sortBy]
                   <td className="py-3 px-4 text-right">
                     <span className={cn(
                       "font-semibold",
-                      transaction.type_c === "income" ? "text-green-600" : "text-red-600"
+transaction.type_c === "income" ? "text-green-600" : "text-red-600"
                     )}>
-                      {transaction.type_c === "income" ? "+" : "-"}{formatCurrency(transaction.amount_c)}
+                      {transaction.type_c === "income" ? "+" : "-"}{formatCurrency(transaction.amount_c || 0)}
                     </span>
                   </td>
                   <td className="py-3 px-4 text-right">
