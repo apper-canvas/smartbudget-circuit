@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react"
-import Button from "@/components/atoms/Button"
-import Input from "@/components/atoms/Input"
-import FormField from "@/components/molecules/FormField"
-import ApperIcon from "@/components/ApperIcon"
+import React, { useEffect, useState } from "react";
+import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
+import Input from "@/components/atoms/Input";
+import FormField from "@/components/molecules/FormField";
 
 const SavingsGoalForm = ({ onSubmit, onCancel, initialData = null }) => {
 const [formData, setFormData] = useState({
@@ -11,18 +11,16 @@ const [formData, setFormData] = useState({
     target_date_c: "",
     current_amount_c: "",
     notes_c: "",
-    decimal_rate_c: "",
-    categories_c: "",
-    priority_range_c: "1-5",
-    is_active_c: true,
-    contact_email_c: "",
-    goal_tags_c: "",
-    reminder_datetime_c: "",
-    features_c: "",
-    goal_type_c: "personal",
-    contact_phone_c: "",
-    reference_url_c: "",
-    importance_rating_c: 3
+decimal_field_c: "",
+    multi_picklist_field_c: "",
+    range_field_c: "1",
+    boolean_field_c: true,
+    email_field_c: "",
+    checkbox_field_c: "",
+    radio_field_c: "Option1",
+    phone_field_c: "",
+    website_field_c: "",
+    goal_term_c: "short term"
   })
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
@@ -36,19 +34,16 @@ useEffect(() => {
           new Date(initialData.target_date_c).toISOString().split('T')[0] : "",
         current_amount_c: initialData.current_amount_c?.toString() || "",
         notes_c: initialData.notes_c || "",
-        decimal_rate_c: initialData.decimal_rate_c?.toString() || "",
-        categories_c: initialData.categories_c || "",
-        priority_range_c: initialData.priority_range_c || "1-5",
-        is_active_c: initialData.is_active_c !== undefined ? initialData.is_active_c : true,
-        contact_email_c: initialData.contact_email_c || "",
-        goal_tags_c: initialData.goal_tags_c || "",
-        reminder_datetime_c: initialData.reminder_datetime_c ? 
-          new Date(initialData.reminder_datetime_c).toISOString().slice(0, 16) : "",
-        features_c: initialData.features_c || "",
-        goal_type_c: initialData.goal_type_c || "personal",
-        contact_phone_c: initialData.contact_phone_c || "",
-        reference_url_c: initialData.reference_url_c || "",
-        importance_rating_c: initialData.importance_rating_c || 3
+decimal_field_c: initialData.decimal_field_c?.toString() || "",
+        multi_picklist_field_c: initialData.multi_picklist_field_c || "",
+        range_field_c: initialData.range_field_c?.toString() || "1",
+        boolean_field_c: initialData.boolean_field_c !== undefined ? initialData.boolean_field_c : true,
+        email_field_c: initialData.email_field_c || "",
+        checkbox_field_c: initialData.checkbox_field_c || "",
+        radio_field_c: initialData.radio_field_c || "Option1",
+        phone_field_c: initialData.phone_field_c || "",
+        website_field_c: initialData.website_field_c || "",
+        goal_term_c: initialData.goal_term_c || "short term"
       })
     }
   }, [initialData])
@@ -88,38 +83,38 @@ if (!formData.title_c.trim()) {
     }
 
     // Decimal validation
-    if (formData.decimal_rate_c && (isNaN(formData.decimal_rate_c) || parseFloat(formData.decimal_rate_c) < 0)) {
-      newErrors.decimal_rate_c = "Please enter a valid decimal rate"
+if (formData.decimal_field_c && (isNaN(formData.decimal_field_c) || parseFloat(formData.decimal_field_c) < 0)) {
+      newErrors.decimal_field_c = "Please enter a valid decimal value"
     }
 
     // Email validation
-    if (formData.contact_email_c) {
+    if (formData.email_field_c) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      if (!emailRegex.test(formData.contact_email_c)) {
-        newErrors.contact_email_c = "Please enter a valid email address"
+      if (!emailRegex.test(formData.email_field_c)) {
+        newErrors.email_field_c = "Please enter a valid email address"
       }
     }
 
     // Phone validation
-    if (formData.contact_phone_c) {
-const phoneRegex = /^\+?[\d\s\-()]{10,}$/
-      if (!phoneRegex.test(formData.contact_phone_c)) {
-        newErrors.contact_phone_c = "Please enter a valid phone number"
+    if (formData.phone_field_c) {
+      const phoneRegex = /^\+?[\d\s\-()]{10,}$/
+      if (!phoneRegex.test(formData.phone_field_c)) {
+        newErrors.phone_field_c = "Please enter a valid phone number"
       }
     }
 
     // Website validation
-    if (formData.reference_url_c) {
+    if (formData.website_field_c) {
       try {
-        new URL(formData.reference_url_c)
+        new URL(formData.website_field_c)
       } catch {
-        newErrors.reference_url_c = "Please enter a valid website URL"
+        newErrors.website_field_c = "Please enter a valid website URL"
       }
     }
 
-    // Rating validation
-    if (formData.importance_rating_c && (formData.importance_rating_c < 1 || formData.importance_rating_c > 5)) {
-      newErrors.importance_rating_c = "Rating must be between 1 and 5"
+    // Range validation
+    if (formData.range_field_c && (isNaN(formData.range_field_c) || parseInt(formData.range_field_c) < 1)) {
+      newErrors.range_field_c = "Please enter a valid range value"
     }
     
     setErrors(newErrors)
@@ -139,18 +134,16 @@ title_c: formData.title_c.trim(),
         target_date_c: formData.target_date_c,
         current_amount_c: parseFloat(formData.current_amount_c) || 0,
         notes_c: formData.notes_c.trim(),
-        decimal_rate_c: parseFloat(formData.decimal_rate_c) || null,
-        categories_c: formData.categories_c,
-        priority_range_c: formData.priority_range_c,
-        is_active_c: formData.is_active_c,
-        contact_email_c: formData.contact_email_c.trim(),
-        goal_tags_c: formData.goal_tags_c,
-        reminder_datetime_c: formData.reminder_datetime_c ? new Date(formData.reminder_datetime_c).toISOString() : null,
-        features_c: formData.features_c,
-        goal_type_c: formData.goal_type_c,
-        contact_phone_c: formData.contact_phone_c.trim(),
-        reference_url_c: formData.reference_url_c.trim(),
-        importance_rating_c: parseInt(formData.importance_rating_c)
+decimal_field_c: parseFloat(formData.decimal_field_c) || null,
+        multi_picklist_field_c: formData.multi_picklist_field_c,
+        range_field_c: parseInt(formData.range_field_c) || 1,
+        boolean_field_c: formData.boolean_field_c,
+        email_field_c: formData.email_field_c.trim(),
+        checkbox_field_c: formData.checkbox_field_c,
+        radio_field_c: formData.radio_field_c,
+        phone_field_c: formData.phone_field_c.trim(),
+        website_field_c: formData.website_field_c.trim(),
+        goal_term_c: formData.goal_term_c
       }
       
       await onSubmit(goal)
@@ -212,50 +205,55 @@ title_c: formData.title_c.trim(),
         />
       </FormField>
 
-      <FormField label="Interest/Growth Rate (%)" error={errors.decimal_rate_c}>
+<FormField label="Interest/Growth Rate (%)" error={errors.decimal_field_c}>
         <Input
           type="number"
           step="0.01"
           min="0"
           max="100"
           placeholder="e.g., 2.5"
-          value={formData.decimal_rate_c}
-          onChange={(e) => handleChange("decimal_rate_c", e.target.value)}
+          value={formData.decimal_field_c}
+          onChange={(e) => handleChange("decimal_field_c", e.target.value)}
         />
       </FormField>
 
-      <FormField label="Goal Categories" error={errors.categories_c}>
-        <Input
-          type="text"
-          placeholder="e.g., Emergency,Vacation,Education"
-          value={formData.categories_c}
-          onChange={(e) => handleChange("categories_c", e.target.value)}
-        />
+<FormField label="Goal Categories" error={errors.multi_picklist_field_c}>
+        <select
+          multiple
+          className="flex min-h-20 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+          value={formData.multi_picklist_field_c.split(',')}
+          onChange={(e) => {
+            const values = Array.from(e.target.selectedOptions, option => option.value);
+            handleChange("multi_picklist_field_c", values.join(','));
+          }}
+        >
+          <option value="Option1">Emergency Fund</option>
+          <option value="Option2">Vacation</option>
+          <option value="Option3">Education</option>
+        </select>
         <div className="text-xs text-gray-500 mt-1">
-          Separate multiple categories with commas
+          Hold Ctrl/Cmd to select multiple options
         </div>
       </FormField>
 
-      <FormField label="Priority Range" error={errors.priority_range_c}>
-        <select
-          className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-          value={formData.priority_range_c}
-          onChange={(e) => handleChange("priority_range_c", e.target.value)}
-        >
-          <option value="1-5">Low Priority (1-5)</option>
-          <option value="6-10">Medium Priority (6-10)</option>
-          <option value="11-15">High Priority (11-15)</option>
-          <option value="16-20">Critical Priority (16-20)</option>
-        </select>
+<FormField label="Priority Level" error={errors.range_field_c}>
+        <Input
+          type="number"
+          min="1"
+          max="10"
+          placeholder="Enter priority level (1-10)"
+          value={formData.range_field_c}
+          onChange={(e) => handleChange("range_field_c", e.target.value)}
+        />
       </FormField>
 
-      <FormField label="Goal Status" error={errors.is_active_c}>
+<FormField label="Goal Status" error={errors.boolean_field_c}>
         <div className="flex items-center space-x-2">
           <input
             type="checkbox"
             id="is_active"
-            checked={formData.is_active_c}
-            onChange={(e) => handleChange("is_active_c", e.target.checked)}
+            checked={formData.boolean_field_c}
+            onChange={(e) => handleChange("boolean_field_c", e.target.checked)}
             className="w-4 h-4 text-primary-500 bg-gray-100 border-gray-300 rounded focus:ring-primary-500"
           />
           <label htmlFor="is_active" className="text-sm text-gray-700">
@@ -264,49 +262,29 @@ title_c: formData.title_c.trim(),
         </div>
       </FormField>
 
-      <FormField label="Contact Email" error={errors.contact_email_c}>
+<FormField label="Contact Email" error={errors.email_field_c}>
         <Input
           type="email"
           placeholder="your@email.com"
-          value={formData.contact_email_c}
-          onChange={(e) => handleChange("contact_email_c", e.target.value)}
+          value={formData.email_field_c}
+          onChange={(e) => handleChange("email_field_c", e.target.value)}
         />
       </FormField>
 
-      <FormField label="Goal Tags" error={errors.goal_tags_c}>
-        <Input
-          type="text"
-          placeholder="e.g., urgent,family,investment"
-          value={formData.goal_tags_c}
-          onChange={(e) => handleChange("goal_tags_c", e.target.value)}
-        />
-        <div className="text-xs text-gray-500 mt-1">
-          Separate multiple tags with commas
-        </div>
-      </FormField>
-
-      <FormField label="Reminder Date & Time" error={errors.reminder_datetime_c}>
-        <Input
-          type="datetime-local"
-          value={formData.reminder_datetime_c}
-          onChange={(e) => handleChange("reminder_datetime_c", e.target.value)}
-        />
-      </FormField>
-
-      <FormField label="Goal Features" error={errors.features_c}>
+<FormField label="Goal Features" error={errors.checkbox_field_c}>
         <div className="space-y-2">
           {["Auto-save", "Progress tracking", "Milestone alerts", "Visual charts"].map(feature => (
             <div key={feature} className="flex items-center space-x-2">
               <input
                 type="checkbox"
                 id={`feature-${feature}`}
-                checked={formData.features_c.split(',').includes(feature)}
+                checked={formData.checkbox_field_c.split(',').includes(feature)}
                 onChange={(e) => {
-                  const currentFeatures = formData.features_c ? formData.features_c.split(',').filter(f => f) : []
+                  const currentFeatures = formData.checkbox_field_c ? formData.checkbox_field_c.split(',').filter(f => f) : []
                   if (e.target.checked) {
-                    handleChange("features_c", [...currentFeatures, feature].join(','))
+                    handleChange("checkbox_field_c", [...currentFeatures, feature].join(','))
                   } else {
-                    handleChange("features_c", currentFeatures.filter(f => f !== feature).join(','))
+                    handleChange("checkbox_field_c", currentFeatures.filter(f => f !== feature).join(','))
                   }
                 }}
                 className="w-4 h-4 text-primary-500 bg-gray-100 border-gray-300 rounded focus:ring-primary-500"
@@ -319,13 +297,24 @@ title_c: formData.title_c.trim(),
         </div>
       </FormField>
 
-      <FormField label="Goal Type" error={errors.goal_type_c}>
+<FormField label="Goal Term" error={errors.goal_term_c}>
+        <select
+          className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+          value={formData.goal_term_c}
+          onChange={(e) => handleChange("goal_term_c", e.target.value)}
+        >
+          <option value="short term">Short Term</option>
+          <option value="long term">Long Term</option>
+          <option value="immediate">Immediate</option>
+        </select>
+      </FormField>
+
+<FormField label="Goal Type" error={errors.radio_field_c}>
         <div className="space-y-2">
           {[
-            { value: "personal", label: "Personal Goal" },
-            { value: "family", label: "Family Goal" },
-            { value: "business", label: "Business Goal" },
-            { value: "education", label: "Education Goal" }
+            { value: "Option1", label: "Personal Goal" },
+            { value: "Option2", label: "Family Goal" },
+            { value: "Option3", label: "Business Goal" }
           ].map(type => (
             <div key={type.value} className="flex items-center space-x-2">
               <input
@@ -333,8 +322,8 @@ title_c: formData.title_c.trim(),
                 id={`type-${type.value}`}
                 name="goal_type"
                 value={type.value}
-                checked={formData.goal_type_c === type.value}
-                onChange={(e) => handleChange("goal_type_c", e.target.value)}
+                checked={formData.radio_field_c === type.value}
+                onChange={(e) => handleChange("radio_field_c", e.target.value)}
                 className="w-4 h-4 text-primary-500 bg-gray-100 border-gray-300 focus:ring-primary-500"
               />
               <label htmlFor={`type-${type.value}`} className="text-sm text-gray-700">
@@ -345,45 +334,23 @@ title_c: formData.title_c.trim(),
         </div>
       </FormField>
 
-      <FormField label="Contact Phone" error={errors.contact_phone_c}>
+<FormField label="Contact Phone" error={errors.phone_field_c}>
         <Input
           type="tel"
           placeholder="+1 (555) 123-4567"
-          value={formData.contact_phone_c}
-          onChange={(e) => handleChange("contact_phone_c", e.target.value)}
+          value={formData.phone_field_c}
+          onChange={(e) => handleChange("phone_field_c", e.target.value)}
         />
       </FormField>
 
-      <FormField label="Reference Website" error={errors.reference_url_c}>
+<FormField label="Reference Website" error={errors.website_field_c}>
         <Input
           type="url"
           placeholder="https://example.com"
-          value={formData.reference_url_c}
-          onChange={(e) => handleChange("reference_url_c", e.target.value)}
+          value={formData.website_field_c}
+          onChange={(e) => handleChange("website_field_c", e.target.value)}
         />
-      </FormField>
-
-      <FormField label="Importance Rating" error={errors.importance_rating_c}>
-        <div className="flex items-center space-x-4">
-          {[1, 2, 3, 4, 5].map(rating => (
-            <button
-              key={rating}
-              type="button"
-              onClick={() => handleChange("importance_rating_c", rating)}
-              className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-sm font-medium transition-colors ${
-                formData.importance_rating_c >= rating
-                  ? 'bg-primary-500 border-primary-500 text-white'
-                  : 'bg-white border-gray-300 text-gray-500 hover:border-primary-300'
-              }`}
-            >
-              {rating}
-            </button>
-          ))}
-          <span className="text-sm text-gray-500 ml-2">
-            ({formData.importance_rating_c}/5)
-          </span>
-        </div>
-      </FormField>
+</FormField>
       
       <FormField label="Notes (Optional)">
         <textarea
