@@ -102,7 +102,7 @@ if (!formData.title_c.trim()) {
 
     // Phone validation
     if (formData.contact_phone_c) {
-      const phoneRegex = /^\+?[\d\s\-\(\)]{10,}$/
+const phoneRegex = /^\+?[\d\s\-()]{10,}$/
       if (!phoneRegex.test(formData.contact_phone_c)) {
         newErrors.contact_phone_c = "Please enter a valid phone number"
       }
