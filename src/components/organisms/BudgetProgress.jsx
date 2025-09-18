@@ -6,27 +6,29 @@ import { cn } from "@/utils/cn"
 
 const BudgetProgress = ({ budgets, transactions, currentMonth, currentYear }) => {
   // Calculate spent amounts for each budget category
-  const budgetProgress = budgets.map(budget => {
+const budgetProgress = budgets.map(budget => {
     const categoryExpenses = transactions.filter(transaction => {
       const transactionDate = new Date(transaction.date)
+      const budgetCategory = budget.category_c?.Name || budget.category_c
       return (
         transaction.type === "expense" &&
-        transaction.category === budget.category &&
+        transaction.category === budgetCategory &&
         transactionDate.getMonth() + 1 === currentMonth &&
         transactionDate.getFullYear() === currentYear
       )
     })
     
     const spent = categoryExpenses.reduce((sum, transaction) => sum + transaction.amount, 0)
-    const percentage = budget.monthlyLimit > 0 ? (spent / budget.monthlyLimit) * 100 : 0
-    const remaining = budget.monthlyLimit - spent
+    const monthlyLimit = budget.monthly_limit_c
+    const percentage = monthlyLimit > 0 ? (spent / monthlyLimit) * 100 : 0
+    const remaining = monthlyLimit - spent
     
     return {
       ...budget,
       spent,
       percentage: Math.min(percentage, 100),
       remaining: Math.max(remaining, 0),
-      isOverBudget: spent > budget.monthlyLimit
+      isOverBudget: spent > monthlyLimit
     }
   })
 
@@ -78,21 +80,21 @@ const BudgetProgress = ({ budgets, transactions, currentMonth, currentYear }) =>
             <div key={budget.Id} className="space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <h4 className="font-medium text-gray-900">{budget.category}</h4>
+<h4 className="font-medium text-gray-900">{budget.category_c?.Name || budget.category_c}</h4>
                   <ApperIcon 
                     name={getStatusIcon(budget.percentage, budget.isOverBudget)}
                     className={cn("w-4 h-4", getStatusColor(budget.percentage, budget.isOverBudget))}
                   />
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-medium text-gray-900">
-                    {formatCurrency(budget.spent)} / {formatCurrency(budget.monthlyLimit)}
+<p className="text-sm font-medium text-gray-900">
+                    {formatCurrency(budget.spent)} / {formatCurrency(budget.monthly_limit_c)}
                   </p>
                   <p className={cn(
                     "text-xs",
                     budget.isOverBudget ? "text-red-600" : "text-gray-500"
                   )}>
-                    {budget.isOverBudget 
+{budget.isOverBudget 
                       ? `${formatCurrency(Math.abs(budget.remaining))} over budget`
                       : `${formatCurrency(budget.remaining)} remaining`
                     }
@@ -102,7 +104,7 @@ const BudgetProgress = ({ budgets, transactions, currentMonth, currentYear }) =>
               
               <div className="space-y-1">
                 <div className="flex justify-between text-xs text-gray-600">
-                  <span>{formatPercent(budget.percentage)} used</span>
+<span>{formatPercent(budget.percentage)} used</span>
                   {budget.isOverBudget && (
                     <span className="text-red-600 font-medium">Over Budget!</span>
                   )}
@@ -113,7 +115,7 @@ const BudgetProgress = ({ budgets, transactions, currentMonth, currentYear }) =>
                       "h-full transition-all duration-300 rounded-full",
                       getProgressColor(budget.percentage, budget.isOverBudget)
                     )}
-                    style={{ width: `${Math.min(budget.percentage, 100)}%` }}
+style={{ width: `${Math.min(budget.percentage, 100)}%` }}
                   />
                   {budget.isOverBudget && (
                     <div

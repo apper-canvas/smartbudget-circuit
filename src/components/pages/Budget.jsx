@@ -212,16 +212,16 @@ const filteredBudgets = budgets.filter(b =>
                     {filteredBudgets.map((budget) => (
 <tr key={budget.Id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                         <td className="py-3 px-4">
-                          <div className="font-medium text-gray-900">{budget.category_c?.Name || budget.category_c}</div>
+<div className="font-medium text-gray-900">{budget.category_c?.Name || budget.category_c}</div>
                         </td>
                         <td className="py-3 px-4 text-right">
-                          <span className="font-semibold text-primary-600">
-                            {formatCurrency(budget.monthlyLimit)}
+<span className="font-semibold text-primary-600">
+                            {formatCurrency(budget.monthly_limit_c)}
                           </span>
                         </td>
                         <td className="py-3 px-4 text-center">
-                          <Badge variant="info">
-                            {getMonthName(budget.month)} {budget.year}
+<Badge variant="info">
+                            {getMonthName(budget.month_c)} {budget.year_c}
                           </Badge>
                         </td>
                         <td className="py-3 px-4 text-right">
