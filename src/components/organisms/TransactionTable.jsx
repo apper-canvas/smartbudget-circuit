@@ -36,13 +36,13 @@ const TransactionTable = ({
 
 // Get unique categories for filter
   const categories = transactions && transactions.length > 0 
-    ? [...new Set(transactions.map(t => t.category_c?.Name || t.category_c || 'Uncategorized'))].sort()
+? [...new Set(transactions.map(t => t && (t.category_c?.Name || t.category_c) || 'Uncategorized'))].sort()
     : [];
 // Filter and sort transactions
   const filteredTransactions = (transactions || [])
     .filter(transaction => {
       const description = transaction.description_c || ''
-      const category = transaction.category_c?.Name || transaction.category_c || ''
+const category = transaction && (transaction.category_c?.Name || transaction.category_c) || ''
       const matchesSearch = description.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           category.toLowerCase().includes(searchTerm.toLowerCase())
       const matchesCategory = !categoryFilter || category === categoryFilter
@@ -193,7 +193,7 @@ Amount
                     <div className="font-medium text-gray-900">{transaction.description_c}</div>
                   </td>
                   <td className="py-3 px-4">
-<Badge variant="default">{transaction.category_c?.Name || transaction.category_c}</Badge>
+<Badge variant="default">{transaction && (transaction.category_c?.Name || transaction.category_c) || 'Uncategorized'}</Badge>
                   </td>
                   <td className="py-3 px-4">
                     <div className="flex flex-wrap gap-1">
