@@ -117,7 +117,7 @@ Name: goalData.title_c,
           phone_field_c: goalData.phone_field_c,
           website_field_c: goalData.website_field_c,
           goal_term_c: goalData.goal_term_c,
-          completion_rate_c: goalData.completion_rate_c || 0
+completion_rate_c: (goalData.completion_rate_c || 0).toString()
         }]
       }
 
@@ -174,7 +174,7 @@ records: [{
           phone_field_c: goalData.phone_field_c,
           website_field_c: goalData.website_field_c,
           goal_term_c: goalData.goal_term_c,
-          completion_rate_c: goalData.completion_rate_c || 0
+completion_rate_c: (goalData.completion_rate_c || 0).toString()
         }]
       }
 
