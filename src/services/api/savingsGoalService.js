@@ -11,7 +11,7 @@ export const savingsGoalService = {
       })
 
       const params = {
-        fields: [
+fields: [
           { field: { Name: "Id" }},
           { field: { Name: "Name" }},
           { field: { Name: "title_c" }},
@@ -19,7 +19,19 @@ export const savingsGoalService = {
           { field: { Name: "current_amount_c" }},
           { field: { Name: "target_date_c" }},
           { field: { Name: "notes_c" }},
-          { field: { Name: "created_at_c" }}
+          { field: { Name: "created_at_c" }},
+          { field: { Name: "decimal_rate_c" }},
+          { field: { Name: "categories_c" }},
+          { field: { Name: "priority_range_c" }},
+          { field: { Name: "is_active_c" }},
+          { field: { Name: "contact_email_c" }},
+          { field: { Name: "goal_tags_c" }},
+          { field: { Name: "reminder_datetime_c" }},
+          { field: { Name: "features_c" }},
+          { field: { Name: "goal_type_c" }},
+          { field: { Name: "contact_phone_c" }},
+          { field: { Name: "reference_url_c" }},
+          { field: { Name: "importance_rating_c" }}
         ],
         orderBy: [{ fieldName: "created_at_c", sorttype: "DESC" }]
       }
@@ -49,14 +61,26 @@ export const savingsGoalService = {
 
       const params = {
         fields: [
-          { field: { Name: "Id" }},
+{ field: { Name: "Id" }},
           { field: { Name: "Name" }},
           { field: { Name: "title_c" }},
           { field: { Name: "target_amount_c" }},
           { field: { Name: "current_amount_c" }},
           { field: { Name: "target_date_c" }},
           { field: { Name: "notes_c" }},
-          { field: { Name: "created_at_c" }}
+          { field: { Name: "created_at_c" }},
+          { field: { Name: "decimal_rate_c" }},
+          { field: { Name: "categories_c" }},
+          { field: { Name: "priority_range_c" }},
+          { field: { Name: "is_active_c" }},
+          { field: { Name: "contact_email_c" }},
+          { field: { Name: "goal_tags_c" }},
+          { field: { Name: "reminder_datetime_c" }},
+          { field: { Name: "features_c" }},
+          { field: { Name: "goal_type_c" }},
+          { field: { Name: "contact_phone_c" }},
+          { field: { Name: "reference_url_c" }},
+          { field: { Name: "importance_rating_c" }}
         ]
       }
 
@@ -78,13 +102,25 @@ export const savingsGoalService = {
 
       const params = {
         records: [{
-          Name: goalData.title_c,
+Name: goalData.title_c,
           title_c: goalData.title_c,
           target_amount_c: goalData.target_amount_c,
           current_amount_c: goalData.current_amount_c || 0,
           target_date_c: goalData.target_date_c,
           notes_c: goalData.notes_c,
-          created_at_c: new Date().toISOString()
+          created_at_c: new Date().toISOString(),
+          decimal_rate_c: goalData.decimal_rate_c,
+          categories_c: goalData.categories_c,
+          priority_range_c: goalData.priority_range_c,
+          is_active_c: goalData.is_active_c,
+          contact_email_c: goalData.contact_email_c,
+          goal_tags_c: goalData.goal_tags_c,
+          reminder_datetime_c: goalData.reminder_datetime_c,
+          features_c: goalData.features_c,
+          goal_type_c: goalData.goal_type_c,
+          contact_phone_c: goalData.contact_phone_c,
+          reference_url_c: goalData.reference_url_c,
+          importance_rating_c: goalData.importance_rating_c
         }]
       }
 
@@ -125,12 +161,24 @@ export const savingsGoalService = {
       const params = {
         records: [{
           Id: parseInt(id),
-          Name: goalData.title_c,
+Name: goalData.title_c,
           title_c: goalData.title_c,
           target_amount_c: goalData.target_amount_c,
           current_amount_c: goalData.current_amount_c,
           target_date_c: goalData.target_date_c,
-          notes_c: goalData.notes_c
+          notes_c: goalData.notes_c,
+          decimal_rate_c: goalData.decimal_rate_c,
+          categories_c: goalData.categories_c,
+          priority_range_c: goalData.priority_range_c,
+          is_active_c: goalData.is_active_c,
+          contact_email_c: goalData.contact_email_c,
+          goal_tags_c: goalData.goal_tags_c,
+          reminder_datetime_c: goalData.reminder_datetime_c,
+          features_c: goalData.features_c,
+          goal_type_c: goalData.goal_type_c,
+          contact_phone_c: goalData.contact_phone_c,
+          reference_url_c: goalData.reference_url_c,
+          importance_rating_c: goalData.importance_rating_c
         }]
       }
 
