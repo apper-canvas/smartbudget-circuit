@@ -1,77 +1,198 @@
-import transactionData from "@/services/mockData/transactions.json"
+import { toast } from "react-toastify";
+import React from "react";
 
-// Service implementation with realistic delays
+// Service implementation with ApperClient
 export const transactionService = {
   getAll: async () => {
-    await new Promise(resolve => setTimeout(resolve, 300))
-    return [...transactionData].sort((a, b) => new Date(b.date) - new Date(a.date))
+    try {
+      const { ApperClient } = window.ApperSDK
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      })
+
+      const params = {
+        fields: [
+          { field: { Name: "Id" }},
+          { field: { Name: "Name" }},
+          { field: { Name: "type_c" }},
+          { field: { Name: "amount_c" }},
+          { field: { Name: "description_c" }},
+          { field: { Name: "date_c" }},
+          { field: { Name: "category_c" }}
+        ],
+        orderBy: [{ fieldName: "date_c", sorttype: "DESC" }]
+      }
+
+      const response = await apperClient.fetchRecords('transaction_c', params)
+
+      if (!response.success) {
+        console.error(response.message)
+        toast.error(response.message)
+        return []
+      }
+
+      return response.data || []
+    } catch (error) {
+      console.error("Error fetching transactions:", error?.response?.data?.message || error)
+      return []
+    }
   },
 
   getById: async (id) => {
-    await new Promise(resolve => setTimeout(resolve, 200))
-    const transaction = transactionData.find(item => item.Id === parseInt(id))
-    if (!transaction) {
-      throw new Error(`Transaction with Id ${id} not found`)
+    try {
+      const { ApperClient } = window.ApperSDK
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      })
+
+      const params = {
+        fields: [
+          { field: { Name: "Id" }},
+          { field: { Name: "Name" }},
+          { field: { Name: "type_c" }},
+          { field: { Name: "amount_c" }},
+          { field: { Name: "description_c" }},
+          { field: { Name: "date_c" }},
+          { field: { Name: "category_c" }}
+        ]
+      }
+
+      const response = await apperClient.getRecordById('transaction_c', parseInt(id), params)
+      return response.data
+    } catch (error) {
+      console.error(`Error fetching transaction ${id}:`, error?.response?.data?.message || error)
+      return null
     }
-    return { ...transaction }
   },
 
-create: async (newTransactionData) => {
-    await new Promise(resolve => setTimeout(resolve, 400))
-    
-    // Validate that transactionData is an array
-    if (!Array.isArray(transactionData)) {
-      throw new Error('Transaction data is not properly initialized as an array')
+  create: async (newTransactionData) => {
+    try {
+      const { ApperClient } = window.ApperSDK
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      })
+
+      const params = {
+        records: [{
+          Name: `${newTransactionData.type_c} - ${newTransactionData.description_c}`,
+          type_c: newTransactionData.type_c,
+          amount_c: newTransactionData.amount_c,
+          description_c: newTransactionData.description_c,
+          date_c: newTransactionData.date_c,
+          category_c: newTransactionData.category_c,
+          created_at_c: new Date().toISOString()
+        }]
+      }
+
+      const response = await apperClient.createRecord('transaction_c', params)
+
+      if (!response.success) {
+        console.error(response.message)
+        toast.error(response.message)
+        return null
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success)
+        const failed = response.results.filter(r => !r.success)
+        
+        if (failed.length > 0) {
+          console.error(`Failed to create ${failed.length} records: ${JSON.stringify(failed)}`)
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message)
+          })
+        }
+        return successful.length > 0 ? successful[0].data : null
+      }
+    } catch (error) {
+      console.error("Error creating transaction:", error?.response?.data?.message || error)
+      return null
     }
-    
-    const maxId = Math.max(...transactionData.map(item => item.Id), 0)
-    const newTransaction = {
-      Id: maxId + 1,
-      type: newTransactionData.type,
-      amount: newTransactionData.amount,
-      category: newTransactionData.category,
-      description: newTransactionData.description,
-      date: newTransactionData.date,
-      createdAt: new Date().toISOString()
-    }
-    transactionData.unshift(newTransaction)
-    return { ...newTransaction }
   },
 
-update: async (id, transactionUpdateData) => {
-    await new Promise(resolve => setTimeout(resolve, 400))
-    
-    // Validate that transactionData is an array
-    if (!Array.isArray(transactionData)) {
-      throw new Error('Transaction data is not properly initialized as an array')
+  update: async (id, transactionUpdateData) => {
+    try {
+      const { ApperClient } = window.ApperSDK
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      })
+
+      const params = {
+        records: [{
+          Id: parseInt(id),
+          Name: `${transactionUpdateData.type_c} - ${transactionUpdateData.description_c}`,
+          type_c: transactionUpdateData.type_c,
+          amount_c: transactionUpdateData.amount_c,
+          description_c: transactionUpdateData.description_c,
+          date_c: transactionUpdateData.date_c,
+          category_c: transactionUpdateData.category_c
+        }]
+      }
+
+      const response = await apperClient.updateRecord('transaction_c', params)
+
+      if (!response.success) {
+        console.error(response.message)
+        toast.error(response.message)
+        return null
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success)
+        const failed = response.results.filter(r => !r.success)
+        
+        if (failed.length > 0) {
+          console.error(`Failed to update ${failed.length} records: ${JSON.stringify(failed)}`)
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message)
+          })
+        }
+        return successful.length > 0 ? successful[0].data : null
+      }
+    } catch (error) {
+      console.error("Error updating transaction:", error?.response?.data?.message || error)
+      return null
     }
-    
-    const index = transactionData.findIndex(item => item.Id === parseInt(id))
-    if (index === -1) {
-      throw new Error(`Transaction with Id ${id} not found`)
-    }
-    const updatedTransaction = {
-      ...transactionData[index],
-      ...transactionUpdateData,
-      Id: parseInt(id)
-    }
-    transactionData[index] = updatedTransaction
-    return { ...updatedTransaction }
   },
 
-delete: async (id) => {
-    await new Promise(resolve => setTimeout(resolve, 300))
-    
-    // Validate that transactionData is an array
-    if (!Array.isArray(transactionData)) {
-      throw new Error('Transaction data is not properly initialized as an array')
-    }
-    
-    const index = transactionData.findIndex(item => item.Id === parseInt(id))
-    if (index === -1) {
-      throw new Error(`Transaction with Id ${id} not found`)
-    }
-    const deletedTransaction = transactionData.splice(index, 1)[0]
-    return { ...deletedTransaction }
+  delete: async (id) => {
+    try {
+      const { ApperClient } = window.ApperSDK
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      })
+
+      const params = {
+        RecordIds: [parseInt(id)]
+      }
+
+      const response = await apperClient.deleteRecord('transaction_c', params)
+
+      if (!response.success) {
+        console.error(response.message)
+        toast.error(response.message)
+        return false
+      }
+
+      if (response.results) {
+        const failed = response.results.filter(r => !r.success)
+        
+        if (failed.length > 0) {
+          console.error(`Failed to delete ${failed.length} records: ${JSON.stringify(failed)}`)
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message)
+          })
+        }
+        return response.results.filter(r => r.success).length > 0
+      }
+    } catch (error) {
+      console.error("Error deleting transaction:", error?.response?.data?.message || error)
+      return false
+}
   }
 }

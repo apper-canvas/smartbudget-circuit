@@ -78,24 +78,23 @@ const Dashboard = () => {
   }
 
   // Calculate dashboard statistics
-  const currentMonthTransactions = transactions.filter(t => {
-    const date = new Date(t.date)
+const currentMonthTransactions = transactions.filter(t => {
+    const date = new Date(t.date_c)
     return date.getMonth() + 1 === currentMonth.month && date.getFullYear() === currentMonth.year
   })
 
   const currentMonthIncome = currentMonthTransactions
-    .filter(t => t.type === "income")
-    .reduce((sum, t) => sum + t.amount, 0)
+    .filter(t => t.type_c === "income")
+    .reduce((sum, t) => sum + t.amount_c, 0)
 
   const currentMonthExpenses = currentMonthTransactions
-    .filter(t => t.type === "expense")
-    .reduce((sum, t) => sum + t.amount, 0)
+    .filter(t => t.type_c === "expense")
+    .reduce((sum, t) => sum + t.amount_c, 0)
 
   const netIncome = currentMonthIncome - currentMonthExpenses
   const totalBudget = budgets
-    .filter(b => b.month === currentMonth.month && b.year === currentMonth.year)
-    .reduce((sum, b) => sum + b.monthlyLimit, 0)
-
+    .filter(b => b.month_c === currentMonth.month && b.year_c === currentMonth.year)
+    .reduce((sum, b) => sum + b.monthly_limit_c, 0)
   const recentTransactions = transactions.slice(0, 5)
 
   if (loading) return <Loading />
@@ -131,17 +130,17 @@ const Dashboard = () => {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard
+<StatCard
           title="This Month's Income"
           value={formatCurrency(currentMonthIncome)}
-          subtitle={`${currentMonthTransactions.filter(t => t.type === "income").length} transactions`}
+          subtitle={`${currentMonthTransactions.filter(t => t.type_c === "income").length} transactions`}
           icon="TrendingUp"
           color="success"
         />
         <StatCard
           title="This Month's Expenses"
           value={formatCurrency(currentMonthExpenses)}
-          subtitle={`${currentMonthTransactions.filter(t => t.type === "expense").length} transactions`}
+          subtitle={`${currentMonthTransactions.filter(t => t.type_c === "expense").length} transactions`}
           icon="TrendingDown"
           color="danger"
         />

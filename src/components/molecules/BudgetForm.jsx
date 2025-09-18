@@ -11,29 +11,30 @@ const BudgetForm = ({ onSubmit, onCancel, initialData = null }) => {
   const [categories, setCategories] = useState([])
   const [formData, setFormData] = useState({
     category: "",
-    monthlyLimit: "",
-    month: getCurrentMonth().month,
-    year: getCurrentMonth().year
+category_c: "",
+    monthly_limit_c: "",
+    month_c: getCurrentMonth().month,
+    year_c: getCurrentMonth().year
   })
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    loadCategories()
+loadCategories()
     if (initialData) {
       setFormData({
-        category: initialData.category || "",
-        monthlyLimit: initialData.monthlyLimit?.toString() || "",
-        month: initialData.month || getCurrentMonth().month,
-        year: initialData.year || getCurrentMonth().year
+        category_c: initialData.category_c?.Id || initialData.category_c || "",
+        monthly_limit_c: initialData.monthly_limit_c?.toString() || "",
+        month_c: initialData.month_c || getCurrentMonth().month,
+        year_c: initialData.year_c || getCurrentMonth().year
       })
     }
   }, [initialData])
 
   const loadCategories = async () => {
-    try {
+try {
       const data = await categoryService.getAll()
-      const expenseCategories = data.filter(cat => cat.type === "expense")
+      const expenseCategories = data.filter(cat => cat.type_c === "expense")
       setCategories(expenseCategories)
     } catch (error) {
       console.error("Failed to load categories:", error)
@@ -70,12 +71,11 @@ const BudgetForm = ({ onSubmit, onCancel, initialData = null }) => {
     setLoading(true)
     try {
       const budget = {
-        category: formData.category,
-        monthlyLimit: parseFloat(formData.monthlyLimit),
-        month: parseInt(formData.month),
-        year: parseInt(formData.year)
+category_c: parseInt(formData.category_c),
+        monthly_limit_c: parseFloat(formData.monthly_limit_c),
+        month_c: parseInt(formData.month_c),
+        year_c: parseInt(formData.year_c)
       }
-      
       await onSubmit(budget)
     } catch (error) {
       console.error("Form submission error:", error)
@@ -113,9 +113,9 @@ const BudgetForm = ({ onSubmit, onCancel, initialData = null }) => {
           onChange={(e) => handleChange("category", e.target.value)}
         >
           <option value="">Select a category</option>
-          {categories.map(category => (
-            <option key={category.Id} value={category.name}>
-              {category.name}
+{categories.map(category => (
+            <option key={category.Id} value={category.Id}>
+              {category.Name}
             </option>
           ))}
         </Select>

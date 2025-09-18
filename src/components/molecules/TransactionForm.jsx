@@ -10,24 +10,24 @@ import { formatDate } from "@/utils/formatters"
 const TransactionForm = ({ onSubmit, onCancel, initialData = null }) => {
   const [categories, setCategories] = useState([])
   const [formData, setFormData] = useState({
-    type: "expense",
-    amount: "",
-    category: "",
-    description: "",
-    date: new Date().toISOString().split("T")[0]
+type_c: "expense",
+    amount_c: "",
+    category_c: "",
+    description_c: "",
+    date_c: new Date().toISOString().split("T")[0]
   })
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    loadCategories()
+loadCategories()
     if (initialData) {
       setFormData({
-        type: initialData.type || "expense",
-        amount: initialData.amount?.toString() || "",
-        category: initialData.category || "",
-        description: initialData.description || "",
-        date: initialData.date ? new Date(initialData.date).toISOString().split("T")[0] : new Date().toISOString().split("T")[0]
+        type_c: initialData.type_c || "expense",
+        amount_c: initialData.amount_c?.toString() || "",
+        category_c: initialData.category_c?.Id || initialData.category_c || "",
+        description_c: initialData.description_c || "",
+        date_c: initialData.date_c ? new Date(initialData.date_c).toISOString().split("T")[0] : new Date().toISOString().split("T")[0]
       })
     }
   }, [initialData])
@@ -78,12 +78,12 @@ const TransactionForm = ({ onSubmit, onCancel, initialData = null }) => {
     
     setLoading(true)
     try {
-      const transaction = {
-        type: formData.type,
-        amount: parseFloat(formData.amount),
-        category: formData.category,
-        description: formData.description.trim(),
-        date: formData.date
+const transaction = {
+        type_c: formData.type_c,
+        amount_c: parseFloat(formData.amount_c),
+        category_c: parseInt(formData.category_c),
+        description_c: formData.description_c.trim(),
+        date_c: formData.date_c
       }
       
       await onSubmit(transaction)
@@ -127,9 +127,9 @@ const TransactionForm = ({ onSubmit, onCancel, initialData = null }) => {
           onChange={(e) => handleChange("category", e.target.value)}
         >
           <option value="">Select a category</option>
-          {filteredCategories.map(category => (
-            <option key={category.Id} value={category.name}>
-              {category.name}
+{filteredCategories.map(category => (
+            <option key={category.Id} value={category.Id}>
+              {category.Name}
             </option>
           ))}
         </Select>

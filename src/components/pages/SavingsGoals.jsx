@@ -136,34 +136,34 @@ const SavingsGoals = () => {
       ) : (
         <div className="grid gap-6">
           {goals.map((goal) => {
-            const progress = calculateProgress(goal.currentAmount, goal.targetAmount)
+const progress = calculateProgress(goal.current_amount_c, goal.target_amount_c)
             const isCompleted = progress >= 100
             const daysUntilTarget = Math.ceil(
-              (new Date(goal.targetDate) - new Date()) / (1000 * 60 * 60 * 24)
+              (new Date(goal.target_date_c) - new Date()) / (1000 * 60 * 60 * 24)
             )
 
             return (
               <div
                 key={goal.Id}
-                className="bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow"
+                className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
               >
-                <div className="flex items-start justify-between mb-4">
+                <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-lg font-semibold text-gray-900">{goal.title}</h3>
+                    <div className="flex items-center gap-2 mb-2">
+                      <h3 className="text-lg font-semibold text-gray-900">{goal.title_c}</h3>
                       {isCompleted && (
                         <div className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
                           Completed
                         </div>
                       )}
                     </div>
-                    {goal.notes && (
-                      <p className="text-gray-600 text-sm mb-3">{goal.notes}</p>
+                    {goal.notes_c && (
+                      <p className="text-gray-600 text-sm mb-3">{goal.notes_c}</p>
                     )}
-                    <div className="flex items-center gap-6 text-sm text-gray-500">
+                    <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-4">
                       <div className="flex items-center gap-1">
                         <ApperIcon name="Calendar" className="w-4 h-4" />
-                        Target: {formatDate(goal.targetDate)}
+                        Target: {formatDate(goal.target_date_c)}
                       </div>
                       <div className="flex items-center gap-1">
                         <ApperIcon name="Clock" className="w-4 h-4" />
@@ -215,14 +215,14 @@ const SavingsGoals = () => {
                   <div className="flex items-center justify-between">
                     <div className="text-sm">
                       <span className="text-gray-600">Saved: </span>
-                      <span className="font-semibold text-gray-900">
-                        {formatCurrency(goal.currentAmount)}
+<span className="font-semibold text-gray-900">
+                        {formatCurrency(goal.current_amount_c)}
                       </span>
                     </div>
                     <div className="text-sm">
                       <span className="text-gray-600">Goal: </span>
                       <span className="font-semibold text-gray-900">
-                        {formatCurrency(goal.targetAmount)}
+                        {formatCurrency(goal.target_amount_c)}
                       </span>
                     </div>
                   </div>
@@ -230,7 +230,7 @@ const SavingsGoals = () => {
                   <div className="text-sm text-gray-600">
                     <span>Remaining: </span>
                     <span className="font-medium">
-                      {formatCurrency(Math.max(0, goal.targetAmount - goal.currentAmount))}
+                      {formatCurrency(Math.max(0, goal.target_amount_c - goal.current_amount_c))}
                     </span>
                   </div>
                 </div>

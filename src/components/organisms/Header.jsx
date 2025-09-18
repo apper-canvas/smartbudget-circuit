@@ -1,14 +1,17 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import { NavLink, useNavigate } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
+import { useSelector } from 'react-redux'
 import Button from "@/components/atoms/Button"
 import ApperIcon from "@/components/ApperIcon"
 import { cn } from "@/utils/cn"
+import { AuthContext } from "@/App"
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const navigate = useNavigate()
-
+  const { logout } = useContext(AuthContext)
+  const { user } = useSelector((state) => state.user)
   const navigation = [
 { name: "Dashboard", path: "/", icon: "LayoutDashboard" },
     { name: "Transactions", path: "/transactions", icon: "Receipt" },
@@ -59,6 +62,22 @@ const Header = () => {
                 </NavLink>
               ))}
             </nav>
+
+{/* User menu */}
+            <div className="hidden md:flex items-center space-x-4">
+              <span className="text-sm text-gray-600">
+                Welcome, {user?.firstName || 'User'}
+              </span>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={logout}
+                className="text-gray-600 hover:text-gray-900"
+              >
+                <ApperIcon name="LogOut" className="w-4 h-4 mr-2" />
+                Logout
+              </Button>
+            </div>
 
             {/* Mobile menu button */}
             <div className="md:hidden">
@@ -132,7 +151,25 @@ const Header = () => {
                         {item.name}
                       </NavLink>
                     ))}
-                  </nav>
+</nav>
+                    
+                    {/* Mobile user menu */}
+                    <div className="px-4 py-3 border-t border-gray-200">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600">
+                          {user?.firstName || 'User'}
+                        </span>
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={logout}
+                          className="text-gray-600 hover:text-gray-900"
+                        >
+                          <ApperIcon name="LogOut" className="w-4 h-4 mr-2" />
+                          Logout
+                        </Button>
+                      </div>
+                    </div>
                 </div>
               </motion.div>
             </>

@@ -38,34 +38,36 @@ const Reports = () => {
   }
 
   // Filter transactions based on selected criteria
-  const filteredTransactions = transactions.filter(transaction => {
-    const transactionDate = new Date(transaction.date)
+const filteredTransactions = transactions.filter(transaction => {
+    const transactionDate = new Date(transaction.date_c)
     const matchesMonth = transactionDate.getMonth() + 1 === selectedMonth
     const matchesYear = transactionDate.getFullYear() === selectedYear
-    const matchesCategory = !selectedCategory || transaction.category === selectedCategory
+    const category = transaction.category_c?.Name || transaction.category_c
+    const matchesCategory = !selectedCategory || category === selectedCategory
     
     return matchesMonth && matchesYear && matchesCategory
   })
-
-  // Get unique categories
-  const categories = [...new Set(transactions.map(t => t.category))].sort()
+ 
+  // Get unique categories for filter dropdown
+  const categories = [...new Set(transactions.map(t => t.category_c?.Name || t.category_c))].sort()
 
   // Calculate summary statistics
-  const totalIncome = filteredTransactions
-    .filter(t => t.type === "income")
-    .reduce((sum, t) => sum + t.amount, 0)
+const totalIncome = filteredTransactions
+    .filter(t => t.type_c === "income")
+    .reduce((sum, t) => sum + t.amount_c, 0)
 
   const totalExpenses = filteredTransactions
-    .filter(t => t.type === "expense")
-    .reduce((sum, t) => sum + t.amount, 0)
+    .filter(t => t.type_c === "expense")
+    .reduce((sum, t) => sum + t.amount_c, 0)
 
   const netIncome = totalIncome - totalExpenses
   
   // Category breakdown for expenses
   const expensesByCategory = filteredTransactions
-    .filter(t => t.type === "expense")
+    .filter(t => t.type_c === "expense")
     .reduce((acc, t) => {
-      acc[t.category] = (acc[t.category] || 0) + t.amount
+      const category = t.category_c?.Name || t.category_c
+      acc[category] = (acc[category] || 0) + t.amount_c
       return acc
     }, {})
 
@@ -74,7 +76,10 @@ const Reports = () => {
       category,
       amount,
       percentage: totalExpenses > 0 ? (amount / totalExpenses) * 100 : 0,
-      count: filteredTransactions.filter(t => t.category === category && t.type === "expense").length
+      count: filteredTransactions.filter(t => {
+        const cat = t.category_c?.Name || t.category_c
+        return cat === category && t.type_c === "expense"
+      }).length
     }))
     .sort((a, b) => b.amount - a.amount)
 
@@ -87,14 +92,13 @@ const Reports = () => {
       const year = date.getFullYear()
       const monthName = getMonthName(month)
       
-      const monthTransactions = transactions.filter(t => {
-        const tDate = new Date(t.date)
+const monthTransactions = transactions.filter(t => {
+        const tDate = new Date(t.date_c)
         return tDate.getMonth() + 1 === month && tDate.getFullYear() === year
       })
       
-      const income = monthTransactions.filter(t => t.type === "income").reduce((sum, t) => sum + t.amount, 0)
-      const expenses = monthTransactions.filter(t => t.type === "expense").reduce((sum, t) => sum + t.amount, 0)
-      
+      const income = monthTransactions.filter(t => t.type_c === "income").reduce((sum, t) => sum + t.amount_c, 0)
+      const expenses = monthTransactions.filter(t => t.type_c === "expense").reduce((sum, t) => sum + t.amount_c, 0)
       trends.push({
         month: monthName,
         year,

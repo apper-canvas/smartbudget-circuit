@@ -5,25 +5,25 @@ import FormField from "@/components/molecules/FormField"
 import ApperIcon from "@/components/ApperIcon"
 
 const SavingsGoalForm = ({ onSubmit, onCancel, initialData = null }) => {
-  const [formData, setFormData] = useState({
-    title: "",
-    targetAmount: "",
-    targetDate: "",
-    currentAmount: "",
-    notes: ""
+const [formData, setFormData] = useState({
+    title_c: "",
+    target_amount_c: "",
+    target_date_c: "",
+    current_amount_c: "",
+    notes_c: ""
   })
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
+useEffect(() => {
     if (initialData) {
       setFormData({
-        title: initialData.title || "",
-        targetAmount: initialData.targetAmount?.toString() || "",
-        targetDate: initialData.targetDate ? 
-          new Date(initialData.targetDate).toISOString().split('T')[0] : "",
-        currentAmount: initialData.currentAmount?.toString() || "",
-        notes: initialData.notes || ""
+        title_c: initialData.title_c || "",
+        target_amount_c: initialData.target_amount_c?.toString() || "",
+        target_date_c: initialData.target_date_c ? 
+          new Date(initialData.target_date_c).toISOString().split('T')[0] : "",
+        current_amount_c: initialData.current_amount_c?.toString() || "",
+        notes_c: initialData.notes_c || ""
       })
     }
   }, [initialData])
@@ -74,11 +74,11 @@ const SavingsGoalForm = ({ onSubmit, onCancel, initialData = null }) => {
     setLoading(true)
     try {
       const goal = {
-        title: formData.title.trim(),
-        targetAmount: parseFloat(formData.targetAmount),
-        targetDate: formData.targetDate,
-        currentAmount: parseFloat(formData.currentAmount) || 0,
-        notes: formData.notes.trim()
+title_c: formData.title_c.trim(),
+        target_amount_c: parseFloat(formData.target_amount_c),
+        target_date_c: formData.target_date_c,
+        current_amount_c: parseFloat(formData.current_amount_c) || 0,
+        notes_c: formData.notes_c.trim()
       }
       
       await onSubmit(goal)
@@ -103,40 +103,40 @@ const SavingsGoalForm = ({ onSubmit, onCancel, initialData = null }) => {
         <Input
           type="text"
           placeholder="e.g., Emergency Fund, New Car, Vacation"
-          value={formData.title}
-          onChange={(e) => handleChange("title", e.target.value)}
+value={formData.title_c}
+          onChange={(e) => handleChange("title_c", e.target.value)}
           maxLength={100}
         />
       </FormField>
       
-      <FormField label="Target Amount" required error={errors.targetAmount}>
+      <FormField label="Target Amount" required error={errors.target_amount_c}>
         <Input
           type="number"
           step="0.01"
           min="0"
           placeholder="0.00"
-          value={formData.targetAmount}
-          onChange={(e) => handleChange("targetAmount", e.target.value)}
+          value={formData.target_amount_c}
+          onChange={(e) => handleChange("target_amount_c", e.target.value)}
         />
       </FormField>
       
-      <FormField label="Target Date" required error={errors.targetDate}>
+      <FormField label="Target Date" required error={errors.target_date_c}>
         <Input
           type="date"
           min={getTodayDate()}
-          value={formData.targetDate}
-          onChange={(e) => handleChange("targetDate", e.target.value)}
+          value={formData.target_date_c}
+          onChange={(e) => handleChange("target_date_c", e.target.value)}
         />
       </FormField>
       
-      <FormField label="Current Amount" error={errors.currentAmount}>
+      <FormField label="Current Amount" error={errors.current_amount_c}>
         <Input
           type="number"
           step="0.01"
           min="0"
           placeholder="0.00"
-          value={formData.currentAmount}
-          onChange={(e) => handleChange("currentAmount", e.target.value)}
+          value={formData.current_amount_c}
+          onChange={(e) => handleChange("current_amount_c", e.target.value)}
         />
       </FormField>
       
@@ -144,13 +144,13 @@ const SavingsGoalForm = ({ onSubmit, onCancel, initialData = null }) => {
         <textarea
           className="flex min-h-[80px] w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200"
           placeholder="Add notes about your savings goal..."
-          value={formData.notes}
-          onChange={(e) => handleChange("notes", e.target.value)}
+          value={formData.notes_c}
+          onChange={(e) => handleChange("notes_c", e.target.value)}
           maxLength={500}
           rows={4}
         />
         <div className="text-xs text-gray-500 mt-1">
-          {formData.notes.length}/500 characters
+          {formData.notes_c.length}/500 characters
         </div>
       </FormField>
       

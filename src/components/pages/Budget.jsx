@@ -96,8 +96,8 @@ const Budget = () => {
   }
 
   // Filter budgets for selected month/year
-  const filteredBudgets = budgets.filter(b => 
-    b.month === selectedMonth && b.year === selectedYear
+const filteredBudgets = budgets.filter(b => 
+    b.month_c === selectedMonth && b.year_c === selectedYear
   )
 
   // Generate month and year options
@@ -210,9 +210,9 @@ const Budget = () => {
                   </thead>
                   <tbody>
                     {filteredBudgets.map((budget) => (
-                      <tr key={budget.Id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+<tr key={budget.Id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                         <td className="py-3 px-4">
-                          <div className="font-medium text-gray-900">{budget.category}</div>
+                          <div className="font-medium text-gray-900">{budget.category_c?.Name || budget.category_c}</div>
                         </td>
                         <td className="py-3 px-4 text-right">
                           <span className="font-semibold text-primary-600">

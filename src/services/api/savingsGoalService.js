@@ -1,58 +1,199 @@
-import savingsGoalData from "@/services/mockData/savingsGoals.json"
-
-// Mock service implementation with realistic delays
-let mockData = [...savingsGoalData]
+import { toast } from "react-toastify";
+import React from "react";
 
 export const savingsGoalService = {
   getAll: async () => {
-    await new Promise(resolve => setTimeout(resolve, 300))
-    return [...mockData].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    try {
+      const { ApperClient } = window.ApperSDK
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      })
+
+      const params = {
+        fields: [
+          { field: { Name: "Id" }},
+          { field: { Name: "Name" }},
+          { field: { Name: "title_c" }},
+          { field: { Name: "target_amount_c" }},
+          { field: { Name: "current_amount_c" }},
+          { field: { Name: "target_date_c" }},
+          { field: { Name: "notes_c" }},
+          { field: { Name: "created_at_c" }}
+        ],
+        orderBy: [{ fieldName: "created_at_c", sorttype: "DESC" }]
+      }
+
+      const response = await apperClient.fetchRecords('savings_goal_c', params)
+
+      if (!response.success) {
+        console.error(response.message)
+        toast.error(response.message)
+        return []
+      }
+
+      return response.data || []
+    } catch (error) {
+      console.error("Error fetching savings goals:", error?.response?.data?.message || error)
+      return []
+    }
   },
 
   getById: async (id) => {
-    await new Promise(resolve => setTimeout(resolve, 200))
-    const goal = mockData.find(item => item.Id === parseInt(id))
-    if (!goal) {
-      throw new Error(`Savings goal with Id ${id} not found`)
+    try {
+      const { ApperClient } = window.ApperSDK
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      })
+
+      const params = {
+        fields: [
+          { field: { Name: "Id" }},
+          { field: { Name: "Name" }},
+          { field: { Name: "title_c" }},
+          { field: { Name: "target_amount_c" }},
+          { field: { Name: "current_amount_c" }},
+          { field: { Name: "target_date_c" }},
+          { field: { Name: "notes_c" }},
+          { field: { Name: "created_at_c" }}
+        ]
+      }
+
+      const response = await apperClient.getRecordById('savings_goal_c', parseInt(id), params)
+      return response.data
+    } catch (error) {
+      console.error(`Error fetching savings goal ${id}:`, error?.response?.data?.message || error)
+      return null
     }
-    return { ...goal }
   },
 
   create: async (goalData) => {
-    await new Promise(resolve => setTimeout(resolve, 400))
-    const newGoal = {
-      Id: Math.max(...mockData.map(g => g.Id), 0) + 1,
-      ...goalData,
-      currentAmount: goalData.currentAmount || 0,
-      createdAt: new Date().toISOString()
+    try {
+      const { ApperClient } = window.ApperSDK
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      })
+
+      const params = {
+        records: [{
+          Name: goalData.title_c,
+          title_c: goalData.title_c,
+          target_amount_c: goalData.target_amount_c,
+          current_amount_c: goalData.current_amount_c || 0,
+          target_date_c: goalData.target_date_c,
+          notes_c: goalData.notes_c,
+          created_at_c: new Date().toISOString()
+        }]
+      }
+
+      const response = await apperClient.createRecord('savings_goal_c', params)
+
+      if (!response.success) {
+        console.error(response.message)
+        toast.error(response.message)
+        return null
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success)
+        const failed = response.results.filter(r => !r.success)
+        
+        if (failed.length > 0) {
+          console.error(`Failed to create ${failed.length} records: ${JSON.stringify(failed)}`)
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message)
+          })
+        }
+        return successful.length > 0 ? successful[0].data : null
+      }
+    } catch (error) {
+      console.error("Error creating savings goal:", error?.response?.data?.message || error)
+      return null
     }
-    mockData.push(newGoal)
-    return { ...newGoal }
   },
 
   update: async (id, goalData) => {
-    await new Promise(resolve => setTimeout(resolve, 400))
-    const index = mockData.findIndex(item => item.Id === parseInt(id))
-    if (index === -1) {
-      throw new Error(`Savings goal with Id ${id} not found`)
+    try {
+      const { ApperClient } = window.ApperSDK
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      })
+
+      const params = {
+        records: [{
+          Id: parseInt(id),
+          Name: goalData.title_c,
+          title_c: goalData.title_c,
+          target_amount_c: goalData.target_amount_c,
+          current_amount_c: goalData.current_amount_c,
+          target_date_c: goalData.target_date_c,
+          notes_c: goalData.notes_c
+        }]
+      }
+
+      const response = await apperClient.updateRecord('savings_goal_c', params)
+
+      if (!response.success) {
+        console.error(response.message)
+        toast.error(response.message)
+        return null
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success)
+        const failed = response.results.filter(r => !r.success)
+        
+        if (failed.length > 0) {
+          console.error(`Failed to update ${failed.length} records: ${JSON.stringify(failed)}`)
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message)
+          })
+        }
+        return successful.length > 0 ? successful[0].data : null
+      }
+    } catch (error) {
+      console.error("Error updating savings goal:", error?.response?.data?.message || error)
+      return null
     }
-    
-    mockData[index] = {
-      ...mockData[index],
-      ...goalData,
-      Id: parseInt(id) // Preserve the ID
-    }
-    return { ...mockData[index] }
   },
 
   delete: async (id) => {
-    await new Promise(resolve => setTimeout(resolve, 300))
-    const index = mockData.findIndex(item => item.Id === parseInt(id))
-    if (index === -1) {
-      throw new Error(`Savings goal with Id ${id} not found`)
+    try {
+      const { ApperClient } = window.ApperSDK
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      })
+
+      const params = {
+        RecordIds: [parseInt(id)]
+      }
+
+      const response = await apperClient.deleteRecord('savings_goal_c', params)
+
+      if (!response.success) {
+        console.error(response.message)
+        toast.error(response.message)
+        return false
+      }
+
+      if (response.results) {
+        const failed = response.results.filter(r => !r.success)
+        
+        if (failed.length > 0) {
+          console.error(`Failed to delete ${failed.length} records: ${JSON.stringify(failed)}`)
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message)
+          })
+        }
+        return response.results.filter(r => r.success).length > 0
+      }
+    } catch (error) {
+      console.error("Error deleting savings goal:", error?.response?.data?.message || error)
+return false
     }
-    
-    mockData.splice(index, 1)
-    return true
   }
 }

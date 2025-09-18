@@ -21,28 +21,29 @@ const TransactionTable = ({
   const [sortOrder, setSortOrder] = useState("desc")
 
   // Get unique categories for filter
-  const categories = [...new Set(transactions.map(t => t.category))].sort()
+const categories = [...new Set(transactions.map(t => t.category_c?.Name || t.category_c))].sort()
 
   // Filter and sort transactions
   const filteredTransactions = transactions
-    .filter(transaction => {
-      const matchesSearch = transaction.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          transaction.category.toLowerCase().includes(searchTerm.toLowerCase())
-      const matchesCategory = !categoryFilter || transaction.category === categoryFilter
-      const matchesType = !typeFilter || transaction.type === typeFilter
-      
+.filter(transaction => {
+      const description = transaction.description_c || ''
+      const category = transaction.category_c?.Name || transaction.category_c || ''
+      const matchesSearch = description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          category.toLowerCase().includes(searchTerm.toLowerCase())
+      const matchesCategory = !categoryFilter || category === categoryFilter
+      const matchesType = !typeFilter || transaction.type_c === typeFilter
       return matchesSearch && matchesCategory && matchesType
     })
     .sort((a, b) => {
-      let aValue = a[sortBy]
+let aValue = a[sortBy]
       let bValue = b[sortBy]
       
-      if (sortBy === "date") {
-        aValue = new Date(a.date)
-        bValue = new Date(b.date)
-      } else if (sortBy === "amount") {
-        aValue = parseFloat(a.amount)
-        bValue = parseFloat(b.amount)
+      if (sortBy === "date_c") {
+        aValue = new Date(a.date_c)
+        bValue = new Date(b.date_c)
+      } else if (sortBy === "amount_c") {
+        aValue = parseFloat(a.amount_c)
+        bValue = parseFloat(b.amount_c)
       }
       
       if (sortOrder === "asc") {
@@ -154,28 +155,28 @@ const TransactionTable = ({
               </tr>
             </thead>
             <tbody>
-              {filteredTransactions.map((transaction) => (
+{filteredTransactions.map((transaction) => (
                 <tr key={transaction.Id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                   <td className="py-3 px-4 text-sm text-gray-600">
-                    {formatDate(transaction.date)}
+                    {formatDate(transaction.date_c)}
                   </td>
                   <td className="py-3 px-4">
-                    <div className="font-medium text-gray-900">{transaction.description}</div>
+                    <div className="font-medium text-gray-900">{transaction.description_c}</div>
                   </td>
                   <td className="py-3 px-4">
-                    <Badge variant="default">{transaction.category}</Badge>
+                    <Badge variant="default">{transaction.category_c?.Name || transaction.category_c}</Badge>
                   </td>
                   <td className="py-3 px-4">
-                    <Badge variant={transaction.type === "income" ? "success" : "danger"}>
-                      {transaction.type}
+                    <Badge variant={transaction.type_c === "income" ? "success" : "danger"}>
+                      {transaction.type_c}
                     </Badge>
                   </td>
                   <td className="py-3 px-4 text-right">
                     <span className={cn(
                       "font-semibold",
-                      transaction.type === "income" ? "text-green-600" : "text-red-600"
+                      transaction.type_c === "income" ? "text-green-600" : "text-red-600"
                     )}>
-                      {transaction.type === "income" ? "+" : "-"}{formatCurrency(transaction.amount)}
+                      {transaction.type_c === "income" ? "+" : "-"}{formatCurrency(transaction.amount_c)}
                     </span>
                   </td>
                   <td className="py-3 px-4 text-right">
