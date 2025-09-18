@@ -135,13 +135,13 @@ const SavingsGoals = () => {
         </div>
       ) : (
         <div className="grid gap-6">
-          {goals.map((goal) => {
-const progress = calculateProgress(goal.current_amount_c, goal.target_amount_c)
+{goals.filter(goal => goal && goal.Id).map((goal) => {
+            const progress = calculateProgress(goal.current_amount_c || 0, goal.target_amount_c || 0)
             const isCompleted = progress >= 100
             const completionRate = goal.completion_rate_c ? Math.round(goal.completion_rate_c * 100) : Math.round(progress)
-            const daysUntilTarget = Math.ceil(
+            const daysUntilTarget = goal.target_date_c ? Math.ceil(
               (new Date(goal.target_date_c) - new Date()) / (1000 * 60 * 60 * 24)
-            )
+            ) : 0
             
             // Goal term badge styling
             const getTermBadgeColor = (term) => {
@@ -158,7 +158,7 @@ const progress = calculateProgress(goal.current_amount_c, goal.target_amount_c)
                 case 'immediate': return 'Immediate'
                 case 'short term': return 'Short Term'
                 case 'long term': return 'Long Term'
-                default: return term
+                default: return term || 'Unknown'
               }
             }
 
@@ -170,7 +170,7 @@ const progress = calculateProgress(goal.current_amount_c, goal.target_amount_c)
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-lg font-semibold text-gray-900">{goal.title_c}</h3>
+                      <h3 className="text-lg font-semibold text-gray-900">{goal.title_c || 'Untitled Goal'}</h3>
                       {isCompleted && (
                         <div className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
                           Completed
@@ -180,7 +180,7 @@ const progress = calculateProgress(goal.current_amount_c, goal.target_amount_c)
                     {goal.notes_c && (
                       <p className="text-gray-600 text-sm mb-3">{goal.notes_c}</p>
                     )}
-<div className="flex flex-wrap items-center gap-2 mb-4">
+                    <div className="flex flex-wrap items-center gap-2 mb-4">
                       {goal.goal_term_c && (
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getTermBadgeColor(goal.goal_term_c)}`}>
                           {formatTermDisplay(goal.goal_term_c)}
@@ -195,7 +195,7 @@ const progress = calculateProgress(goal.current_amount_c, goal.target_amount_c)
                     <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-4">
                       <div className="flex items-center gap-1">
                         <ApperIcon name="Calendar" className="w-4 h-4" />
-                        Target: {formatDate(goal.target_date_c)}
+                        Target: {formatDate(goal.target_date_c || new Date())}
                       </div>
                       <div className="flex items-center gap-1">
                         <ApperIcon name="Clock" className="w-4 h-4" />
@@ -247,14 +247,14 @@ const progress = calculateProgress(goal.current_amount_c, goal.target_amount_c)
                   <div className="flex items-center justify-between">
                     <div className="text-sm">
                       <span className="text-gray-600">Saved: </span>
-<span className="font-semibold text-gray-900">
-                        {formatCurrency(goal.current_amount_c)}
+                      <span className="font-semibold text-gray-900">
+                        {formatCurrency(goal.current_amount_c || 0)}
                       </span>
                     </div>
                     <div className="text-sm">
                       <span className="text-gray-600">Goal: </span>
                       <span className="font-semibold text-gray-900">
-                        {formatCurrency(goal.target_amount_c)}
+                        {formatCurrency(goal.target_amount_c || 0)}
                       </span>
                     </div>
                   </div>
@@ -262,7 +262,7 @@ const progress = calculateProgress(goal.current_amount_c, goal.target_amount_c)
                   <div className="text-sm text-gray-600">
                     <span>Remaining: </span>
                     <span className="font-medium">
-                      {formatCurrency(Math.max(0, goal.target_amount_c - goal.current_amount_c))}
+                      {formatCurrency(Math.max(0, (goal.target_amount_c || 0) - (goal.current_amount_c || 0)))}
                     </span>
                   </div>
                 </div>
